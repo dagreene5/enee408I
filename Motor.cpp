@@ -5,6 +5,7 @@ Motor::Motor(int dig1, int dig2, int p) {
   digital1 = dig1;
   digital2 = dig2;
   pwm = p;
+  setDelay = 20;
 }
 
 void Motor::initialize() {

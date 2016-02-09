@@ -1,4 +1,5 @@
 #include "Motor.h"
+#include "string.h"
 
 /* Digital Pins */
 int digital2 = 2;
@@ -24,8 +25,7 @@ int analog3 = A3;
 int analog4 = A4;
 int analog5 = A5;
 
-/* PWN Control Vars */
-int pwmVal = 0;
+/* PWM Control Vars */
 int powerDirection = 1;
 
 /*
@@ -39,48 +39,51 @@ void setup() {
   motor1 = &motor1_init;
   motor1->initialize();
 
-  Motor motor2_init(digital7, digital8, pwm3);
+  Motor motor2_init(digital8, digital7, pwm3);
   motor2 = &motor2_init;
   motor2->initialize();
-  
+
+  motor1->setPWM(0);
+  motor2->setPWM(0);
   Serial.begin(9600);
 }
 
 void loop() {
-  motor1->setPWM(255);
-  motor2->setPWM(255);
-}
 
-void readEncoders() {
+  if (Serial.available() > 0) {
+    char input = Serial.read();
+    int pwmSpeed = 0;
+    
 
-  Serial.print("PWM val: ");
-  Serial.println(pwmVal);
-  int a_reading = analogRead(A0);
-  int b_reading = analogRead(A1);
-  Serial.print("A reading: ");
-  Serial.println(a_reading);
-  Serial.print("B reading: ");
-  Serial.println(b_reading);
-  Serial.println();
-}
+    while (Serial.available() > 0) {
+      Serial.read();
+    }
+    
+    switch (input) {
 
-void testMotors() {
-  pwmVal += (10 * powerDirection);
+      case 'g':
+        Serial.print("read input: ");
+        Serial.println(input);
+        pwmSpeed = 50;
+        break;
+      case 's':
+        pwmSpeed = 0;
+        break;
+    }
 
-  if (pwmVal > 255) {
-    pwmVal = 255;
-    powerDirection = -powerDirection;
-  } else if (pwmVal < 0) {
-    pwmVal = 0;
-    digitalWrite(digital7, HIGH);
-    digitalWrite(digital8, LOW);
-    powerDirection = -powerDirection;
+    Serial.print("pwm speed: ");
+    Serial.println(pwmSpeed);
+
+    analogWrite(pwm3, pwmSpeed);
+    analogWrite(pwm5, pwmSpeed);
+    /*motor2->setPWM(pwmSpeed);
+    motor1->setPWM(pwmSpeed);*/
+  
   }
 
-  analogWrite(pwm3, pwmVal);
-  analogWrite(pwm5, pwmVal);
+  delay(500);
+  
+}
 
-  readEncoders();
-  delay(5000);
- }
+
 
