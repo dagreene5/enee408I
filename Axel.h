@@ -2,24 +2,17 @@
 extern "C" {
 #endif
 
-struct Motor {
-  int digitalPin1;
-  int digitalPin2;
-  int pwmPin;
-  int digital1Low;
-  int pwmVal;
-  int setDelay;  
-  
+struct Axel {
+  struct Motor *leftMotor;
+  struct Motor *rightMotor; 
 };
 
-#ifndef Motor_h
-#define Motor_h
+#ifndef Axel_h
+#define Axel_h
 
-struct Motor *init_Motor(int, int, int);
-void setPWM(struct Motor *, int);
-void reverseDirection(struct Motor *);
-
-
+struct Axel *init_Axel(struct Motor *, struct Motor *);
+int incrementLeft(struct Axel *, int);
+int incrementRight(struct Axel *, int);
 
 /*
 class Motor {

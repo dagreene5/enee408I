@@ -1,5 +1,6 @@
 #include "Motor.h"
 #include "string.h"
+#include "Axel.h"
 
 /* Digital Pins */
 int digital2 = 2;
@@ -31,20 +32,20 @@ int powerDirection = 1;
 /*
  * PWM 0 - 255
  */
-Motor *motor1, *motor2;
+
+ /*
+  * As is, motor 2 is the right motor, motor1 is left.
+  * Both are configured to start moving forward.
+  */
+struct Motor *motor1, *motor2;
+struct Axel *axel;
 
 void setup() {
 
-  Motor motor1_init(digital2, digital4, pwm5);
-  motor1 = &motor1_init;
-  motor1->initialize();
+  motor1 = init_Motor(digital2, digital4, pwm5);
+  motor2 = init_Motor(digital8, digital7, pwm3);
+  axel = init_Axel(motor1, motor2);
 
-  Motor motor2_init(digital8, digital7, pwm3);
-  motor2 = &motor2_init;
-  motor2->initialize();
-
-  motor1->setPWM(0);
-  motor2->setPWM(0);
   Serial.begin(9600);
 }
 
@@ -58,24 +59,54 @@ void loop() {
     while (Serial.available() > 0) {
       Serial.read();
     }
-    
+
+    Serial.print("read input: ");
+    Serial.println(input);
     switch (input) {
 
       case 'g':
-        Serial.print("read input: ");
-        Serial.println(input);
+        
         pwmSpeed = 50;
+        setPWM(motor1, pwmSpeed);
+        setPWM(motor2, pwmSpeed);
         break;
       case 's':
         pwmSpeed = 0;
+        setPWM(motor1, pwmSpeed);
+        setPWM(motor2, pwmSpeed);
+        break;
+      case 'l':
+
+        int val;
+        Serial.println("decreasing left");
+        while ((val = incrementLeft(axel, -5)) != 0) {
+          Serial.print("inc val: ");
+          Serial.println(val);
+          delay(20);
+        }
+        Serial.println("increasing right");
+        while ((val = incrementRight(axel, 5)) != 255) {
+          Serial.print("inc val: ");
+          Serial.println(val);
+          delay(20);
+        }
+        Serial.println("done");
+        break;
+      case 'r':
+       Serial.println("increasing left");
+        while (incrementLeft(axel, 5) != 255) {
+          delay(20);
+        }
+        Serial.println("decreasing right");
+        while (incrementRight(axel, -5) != 0) {
+          delay(20);
+        }
+        Serial.println("done");
         break;
     }
-
-    Serial.print("pwm speed: ");
-    Serial.println(pwmSpeed);
-
-    analogWrite(pwm3, pwmSpeed);
-    analogWrite(pwm5, pwmSpeed);
+    
+    //analogWrite(pwm3, pwmSpeed);
+    //analogWrite(pwm5, pwmSpeed);
     /*motor2->setPWM(pwmSpeed);
     motor1->setPWM(pwmSpeed);*/
   
