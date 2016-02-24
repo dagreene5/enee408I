@@ -1,6 +1,6 @@
 #include "Motor.h"
 #include "string.h"
-#include "Axel.h"
+#include "Ping.h"
 
 /* Digital Pins */
 int digital2 = 2;
@@ -33,24 +33,55 @@ int powerDirection = 1;
  * PWM 0 - 255
  */
 
- /*
-  * As is, motor 2 is the right motor, motor1 is left.
-  * Both are configured to start moving forward.
-  */
-struct Motor *motor1, *motor2;
-struct Axel *axel;
 
 void setup() {
 
-  motor1 = init_Motor(digital2, digital4, pwm5);
-  motor2 = init_Motor(digital8, digital7, pwm3);
-  axel = init_Axel(motor1, motor2);
-
+  // left pins, then right pins
+  init_Motors(digital2, digital4, pwm5,
+    digital8, digital7, pwm3);
+  init_Ping(digital12);
   Serial.begin(9600);
 }
 
 void loop() {
 
+
+  //travelInSquare();
+  //testPing();  
+  moveAround();
+  
+}
+
+void testPing() {
+  Serial.print("Ping reading: ");
+  Serial.println(getPingReading());
+  delay(500);
+}
+
+void moveAround() {
+
+  int pingReading = getPingReading();
+  long minDistance = 20;
+  
+  if (pingReading < minDistance && pingReading != 0) {
+    halt();
+
+    while ((pingReading = getPingReading()) < minDistance && pingReading != 0) {
+      setRotateClockwise();
+      delay(100);
+    }
+
+    halt();
+    delay(100);
+    setMoveForward();
+  } else {
+    setMoveForward();
+  }
+
+  delay(100);
+}
+
+void readFromSerial() {
   if (Serial.available() > 0) {
     char input = Serial.read();
     int pwmSpeed = 0;
@@ -67,53 +98,42 @@ void loop() {
       case 'g':
         
         pwmSpeed = 50;
-        setPWM(motor1, pwmSpeed);
-        setPWM(motor2, pwmSpeed);
+        setPWMs(pwmSpeed);
         break;
       case 's':
         pwmSpeed = 0;
-        setPWM(motor1, pwmSpeed);
-        setPWM(motor2, pwmSpeed);
+        setPWMs(pwmSpeed);
         break;
-      case 'l':
-
-        int val;
-        Serial.println("decreasing left");
-        while ((val = incrementLeft(axel, -5)) != 0) {
-          Serial.print("inc val: ");
-          Serial.println(val);
-          delay(20);
-        }
-        Serial.println("increasing right");
-        while ((val = incrementRight(axel, 5)) != 255) {
-          Serial.print("inc val: ");
-          Serial.println(val);
-          delay(20);
-        }
-        Serial.println("done");
-        break;
-      case 'r':
-       Serial.println("increasing left");
-        while (incrementLeft(axel, 5) != 255) {
-          delay(20);
-        }
-        Serial.println("decreasing right");
-        while (incrementRight(axel, -5) != 0) {
-          delay(20);
-        }
-        Serial.println("done");
-        break;
-    }
-    
-    //analogWrite(pwm3, pwmSpeed);
-    //analogWrite(pwm5, pwmSpeed);
-    /*motor2->setPWM(pwmSpeed);
-    motor1->setPWM(pwmSpeed);*/
-  
+    } 
   }
+}
 
-  delay(500);
-  
+void travelInSquare() {
+
+  setMoveForward();
+  delay(3000);
+  halt();
+  delay(200);
+  setRotateClockwise();
+  delay(1000);
+  halt();
+  delay(200);
+  setMoveForward();
+  delay(3000);
+  halt();
+  delay(200);
+  setRotateClockwise();
+  delay(1000);
+  halt();
+  delay(200);
+  setMoveForward();
+  delay(3000);
+  halt();
+  delay(200);
+  setRotateClockwise();
+  delay(1000);
+  halt();
+  delay(200);
 }
 
 

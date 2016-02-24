@@ -15,25 +15,23 @@ struct Motor {
 #ifndef Motor_h
 #define Motor_h
 
-struct Motor *init_Motor(int, int, int);
-void setPWM(struct Motor *, int);
-void reverseDirection(struct Motor *);
+void init_Motors(int, int, int, int, int, int);
+void setLeftPWM(int);
+void setRightPWM(int);
+void setPWMs(int);
+void setLeftForward();
+void setLeftBackward();
+void setRightForward();
+void setRightBackward();
+void setRotateClockwise();
+void setRotateCounterClockwise();
+void setMoveForward();
+void setMoveBackward();
+void halt();
+void haltLeft();
+void haltRight();
 
 
-
-/*
-class Motor {
-  int digital1, digital2, pwm;
-  int digital1Low;
-  int pwmVal;
-  int setDelay;
-  
-  public:
-    Motor(int, int, int);     // set digital and pwm pins
-    void initialize();             // set pin modes and digital HIGH/LOW
-    void setPWM(int);              // set speed
-    void reverseDirection();       // flip digital outputs
-};*/
 
 #endif
 
