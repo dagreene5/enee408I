@@ -29,6 +29,9 @@ int analog5 = A5;
 /* PWM Control Vars */
 int powerDirection = 1;
 
+String serialInput;
+
+
 /*
  * PWM 0 - 255
  */
@@ -48,9 +51,10 @@ void loop() {
 
   //travelInSquare();
   //testPing();  
-  moveAround();
-  
+  //moveAround();
+  readFromSerial();
 }
+
 
 void testPing() {
   Serial.print("Ping reading: ");
@@ -82,30 +86,166 @@ void moveAround() {
 }
 
 void readFromSerial() {
-  if (Serial.available() > 0) {
-    char input = Serial.read();
-    int pwmSpeed = 0;
-    
 
     while (Serial.available() > 0) {
-      Serial.read();
-    }
+      char received = Serial.read();
 
-    Serial.print("read input: ");
-    Serial.println(input);
-    switch (input) {
+      // end of command
+      if (received == '\n') {
 
-      case 'g':
+        executeCommand(serialInput);
         
-        pwmSpeed = 50;
-        setPWMs(pwmSpeed);
+        serialInput = "";
+        
+      } else {
+        serialInput += received;
+      }
+    }
+}
+
+/*
+ * commands:
+ * 
+ * sl # : set left to pwm #
+ * il # : increment left by #
+ * slb : set left backward
+ * slf : set left forward
+ * gl : get left pwm #
+ * 
+ * 
+ * sr # : set right to pwm #
+ * ir # : increment right by #
+ * srb : set right backward
+ * srf : set right forward
+ * gr : get right pwm #
+ * 
+ * sb # : set both to pwm #
+ * h : halt, equivalent to sb 0
+ * 
+ * smcw : set move clockwise
+ * smcc : set move counterclockwise
+ * smf : set move forward
+ * smb : set move backward
+ * 
+ * gp : get ping reading
+ */
+void executeCommand(String command) {
+
+  int pwmSpeed;
+  
+  switch (command[0]) {
+
+      case 'i':
+        switch (command[1]) {
+          case 'l':
+            incrementLeft(command.substring(3).toInt());
+          break;
+
+          case 'r':
+            incrementRight(command.substring(3).toInt());
+          break;
+        }
+
+
+        break;
+      case 'g':
+
+        switch (command[1]) {
+
+          case 'r': // gr: get right pwm speed
+            Serial.println(getRightPWM());
+          break;
+
+          case 'l': // gl: get left pwm speed
+            Serial.println(getLeftPWM());
+          break;
+
+          case 'p': // gp: get ping reading
+            Serial.println(getPingReading());
+          break;
+        }
+        
         break;
       case 's':
-        pwmSpeed = 0;
-        setPWMs(pwmSpeed);
+      
+        switch (command[1]) {
+
+          case 'r': 
+
+            switch (command[2]) {
+
+              case ' ': // sr #: set right motor to pwm #
+                pwmSpeed = command.substring(3).toInt();
+                setRightPWM(pwmSpeed);
+               break;
+
+              case 'b': // srb: set right backwards
+                setRightBackward();
+                break;
+              case 'f': // srf: set right forward
+                setRightForward();
+                break;
+            }
+            
+          break;
+
+          case 'l': 
+          
+            switch (command[2]) {
+
+              case ' ': // sl #: set left motor to pwm #
+                pwmSpeed = command.substring(3).toInt();
+                setLeftPWM(pwmSpeed);
+               break;
+
+              case 'b': // slb: set left backwards
+                setLeftBackward();
+                break;
+              case 'f': // slf: set left forward
+                setLeftForward();
+                break;
+            }
+          break;
+
+          case 'b': // sb #: set both motors to pwm #
+            pwmSpeed = command.substring(3).toInt();
+            setPWMs(pwmSpeed);
+          break;
+
+          case 'm': 
+
+            switch (command[2]) {
+
+
+              case 'c':
+
+                switch(command[3]) {
+                  
+                  case 'w': // smcw : set clockwise
+                    setRotateClockwise();
+                    break;
+  
+                  case 'c': // smcc : set counterclockwise
+                    setRotateCounterClockwise();
+                    break;
+                }
+                break;
+
+              case 'f':
+                  setMoveForward();
+                  break;
+              case 'b':
+                  setMoveBackward();
+                  break;      
+            }
+            break;    
+        }
+        break;
+
+      case 'h':
+        halt();
         break;
     } 
-  }
 }
 
 void travelInSquare() {

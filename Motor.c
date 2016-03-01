@@ -31,6 +31,28 @@ void init_Motors(int dig1Left, int dig2Left, int pwmLeft,
    rightMotor.digital1Low = 1;
 }
 
+void incrementLeft(int increment) {
+  leftMotor.pwmVal += increment;
+  if (leftMotor.pwmVal < 0) {
+    leftMotor.pwmVal = 0;
+  } else if (leftMotor.pwmVal > 255) {
+    leftMotor.pwmVal = 255;
+  }
+
+  analogWrite(leftMotor.pwmPin, leftMotor.pwmVal);
+}
+
+void incrementRight(int increment) {
+  rightMotor.pwmVal += increment;
+  if (rightMotor.pwmVal < 0) {
+    rightMotor.pwmVal = 0;
+  } else if (rightMotor.pwmVal > 255) {
+    rightMotor.pwmVal = 255;
+  }
+
+  analogWrite(rightMotor.pwmPin, rightMotor.pwmVal);
+}
+
 void setLeftPWM(int pwm) {
   leftMotor.pwmVal = pwm;
   analogWrite(leftMotor.pwmPin, leftMotor.pwmVal);
@@ -40,6 +62,13 @@ void setRightPWM(int pwm) {
   analogWrite(rightMotor.pwmPin, rightMotor.pwmVal);
 }
 
+int getLeftPWM() {
+  return leftMotor.pwmVal;
+}
+
+int getRightPWM() {
+  return rightMotor.pwmVal;
+}
 void setPWMs(int pwm) {
   setLeftPWM(pwm);
   setRightPWM(pwm);
@@ -67,28 +96,20 @@ void setRightBackward() {
 }
 void setRotateClockwise() {
   setLeftForward();
-  setLeftPWM(80);
   setRightBackward();
-  setRightPWM(60);
 }
 
 void setRotateCounterClockwise() {
   setLeftBackward();
-  setLeftPWM(100);
   setRightForward();
-  setRightPWM(60);
 }
 void setMoveForward() {
   setLeftForward();
   setRightForward();
-  setLeftPWM(100);
-  setRightPWM(50);
 }
 void setMoveBackward() {
   setLeftBackward();
   setRightBackward();
-  setLeftPWM(80);
-  setRightPWM(80);
 }
 void halt() {
   setPWMs(0);

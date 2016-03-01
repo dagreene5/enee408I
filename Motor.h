@@ -18,7 +18,11 @@ struct Motor {
 void init_Motors(int, int, int, int, int, int);
 void setLeftPWM(int);
 void setRightPWM(int);
+int getLeftPWM();
+int getRightPWM();
 void setPWMs(int);
+void incrementLeft(int);
+void incrementRight(int);
 void setLeftForward();
 void setLeftBackward();
 void setRightForward();
