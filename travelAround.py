@@ -1,11 +1,9 @@
 #!/usr/bin/python
 import struct
-
-
-
 import serial
-port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=.01);
-file = open( "/dev/input/mice", "rb");
+
+port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=.01);   # communication with arduino
+file = open( "/dev/input/mice", "rb");                              # for optical input
 
 def setLeft(pwm):
     port.write("sl " + str(pwm) + "\n");

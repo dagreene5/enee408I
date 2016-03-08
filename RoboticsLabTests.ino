@@ -47,11 +47,6 @@ void setup() {
 }
 
 void loop() {
-
-
-  //travelInSquare();
-  //testPing();  
-  //moveAround();
   readFromSerial();
 }
 
@@ -154,14 +149,17 @@ void executeCommand(String command) {
 
           case 'r': // gr: get right pwm speed
             Serial.println(getRightPWM());
+            Serial.flush();
           break;
 
           case 'l': // gl: get left pwm speed
             Serial.println(getLeftPWM());
+            Serial.flush();
           break;
 
           case 'p': // gp: get ping reading
             Serial.println(getPingReading());
+            Serial.flush();
           break;
         }
         
