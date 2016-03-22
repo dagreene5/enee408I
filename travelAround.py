@@ -140,7 +140,7 @@ movingAverageList = LinkedList(firstNode);
 movingSum = 0;
 print("Initializing moving average...\n");
 while (movingAverageList.size() < numAverages):
-    movingAverageList.enqueue(Node(0));
+    movingAverageList.enqueue(0);
 print("Moving average initialized with " + str(movingAverageList.size()) + " values\n");
 
 moveForward();
@@ -175,7 +175,7 @@ while (1):
         dx = getDx();
         print("Dx: " + str(dx));
         head = movingAverageList.dequeue();
-        movingAverageList.enqueue(Node(dx));
+        movingAverageList.enqueue(dx);
         movingSum -= head.get_data();
         movingSum += dx;
         scaled = movingSum / numAverages;
