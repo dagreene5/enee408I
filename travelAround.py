@@ -45,8 +45,14 @@ def moveBackward():
     port.write("smbe");
     return;
 
-def getPing():
-    port.write("gpe");
+def getPingLeft():
+    port.write("gple");
+    ret = port.readline();
+    print("ping returned: " + ret);
+    return int(ret);
+
+def getPingRight():
+    port.write("gpre");
     ret = port.readline();
     print("ping returned: " + ret);
     return int(ret);
