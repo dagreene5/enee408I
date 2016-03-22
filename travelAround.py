@@ -173,6 +173,7 @@ while (1):
     else:
         moveForward();
         dx = getDx();
+        dx = dx / 10;
         print("Dx: " + str(dx));
         head = movingAverageList.dequeue();
         movingAverageList.enqueue(dx);
