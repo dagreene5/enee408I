@@ -48,13 +48,11 @@ def moveBackward():
 def getPingLeft():
     port.write("gple");
     ret = port.readline();
-    print("ping returned: " + ret);
     return int(ret);
 
 def getPingRight():
     port.write("gpre");
     ret = port.readline();
-    print("ping returned: " + ret);
     return int(ret);
 
 def getLeftPWM():
@@ -125,11 +123,11 @@ while (1):
         setLeft(40);
         
     else:
-        print("moving forward\n");
         moveForward();
-        #dx = getDx();
-        #incrementLeft(-dx);
-        #incrementRight(dx);
+        dx = getDx();
+        print("Dx: " + dx);
+        incrementLeft(-dx);
+        incrementRight(dx);
         
 
 file.close();
