@@ -83,7 +83,7 @@ port.flush();
 port.flush();
 port.write("gpe");
 port.flush();
-print("arduino response: " + port.readLine());
+print("arduino response: " + port.readline());
 '''
 while (1):
 
