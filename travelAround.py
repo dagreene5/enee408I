@@ -84,22 +84,25 @@ port.flush();
 
 # stupid initialization
 response = "";
-while (response == ""):
-    port.write("gpe");
+while (1):#response == ""):
+    port.write("gple");
     port.flush();
     response = port.readline();
 
-port.write("gpe");
-print("Write after loop: " + port.readline());
-port.write("gpe");
-print("Write after loop: " + port.readline());
-port.write("gpe");
-print("Write after loop: " + port.readline());
 '''
 while (1):
 
-    distance = getPing();
-    print("distance: " + str(distance) + "e");
+    distanceLeft = getPingLeft();
+    distanceRight = getPingRight();
+
+    if (distanceLeft == 0) {
+
+        if (distanceRight == 0) {
+
+        } else {
+
+        }
+    }
     if (distance != 0 and distance < 20):
         print("distance is too small, rotating\n");
         halt();

@@ -3,27 +3,39 @@
 
 struct Ping ping;
 
-void init_Ping(int digital) {
-  ping.digitalPin = digital;
-  pinMode(ping.digitalPin, OUTPUT);
+void init_Ping(int digitalLeft, int digitalRight) {
+  ping.digitalPinLeft = digitalLeft;
+  ping.digitalPinRight = digitalRight;
+  pinMode(ping.digitalPinLeft, OUTPUT);
+  pinMode(ping.digitalPinRight, OUTPUT);
 }
-void sendPulse() {
-  pinMode(ping.digitalPin, OUTPUT);
-  digitalWrite(ping.digitalPin, LOW);
+void sendPulse(int pin) {
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, LOW);
   delayMicroseconds(2);
-  digitalWrite(ping.digitalPin, HIGH);
+  digitalWrite(pin, HIGH);
   delayMicroseconds(5);
-  digitalWrite(ping.digitalPin, LOW);
+  digitalWrite(pin, LOW);
 }
 
 long microsecondsToCentimeters(long microseconds) {
   return microseconds / 29 / 2;
 }
 
-long getPingReading() {
-  sendPulse();
-  pinMode(ping.digitalPin, INPUT);
-  long duration = pulseIn(ping.digitalPin, HIGH, 10000);
+long getPingReading(int pin) {
+  sendPulse(pin);
+  pinMode(pin, INPUT);
+  long duration = pulseIn(pin, HIGH, 10000);
   return microsecondsToCentimeters(duration);
 }
+
+long getPingLeft() {
+  return getPingReading(ping.digitalPinLeft);
+}
+
+long getPingRight() {
+  return getPingReading(ping.digitalPinRight);
+}
+
+
 

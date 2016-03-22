@@ -3,15 +3,16 @@ extern "C" {
 #endif
 
 struct Ping {
-  int digitalPin;
+  int digitalPinLeft;
+  int digitalPinRight;
 };
 
 #ifndef Ping_h
 #define Ping_h
 
-void init_Ping(int);
-void sendPulse();
-long getPingReading();
+void init_Ping(int, int);
+long getPingLeft();
+long getPingRight();
 
 
 

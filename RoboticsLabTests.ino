@@ -42,42 +42,12 @@ void setup() {
   // left pins, then right pins
   init_Motors(digital2, digital4, pwm5,
     digital8, digital7, pwm3);
-  init_Ping(digital12);
+  init_Ping(digital12, digital13);
   Serial.begin(9600);
 }
 
 void loop() {
   readFromSerial();
-}
-
-
-void testPing() {
-  Serial.print("Ping reading: ");
-  Serial.println(getPingReading());
-  delay(500);
-}
-
-void moveAround() {
-
-  int pingReading = getPingReading();
-  long minDistance = 20;
-  
-  if (pingReading < minDistance && pingReading != 0) {
-    halt();
-
-    while ((pingReading = getPingReading()) < minDistance && pingReading != 0) {
-      setRotateClockwise();
-      delay(100);
-    }
-
-    halt();
-    delay(100);
-    setMoveForward();
-  } else {
-    setMoveForward();
-  }
-
-  delay(100);
 }
 
 void readFromSerial() {
@@ -121,7 +91,8 @@ void readFromSerial() {
  * smf : set move forward
  * smb : set move backward
  * 
- * gp : get ping reading
+ * gpl : get left ping reading
+ * gpr : get right ping reading
  */
 void executeCommand(String command) {
 
@@ -156,9 +127,20 @@ void executeCommand(String command) {
             Serial.flush();
           break;
 
-          case 'p': // gp: get ping reading
-            Serial.println(getPingReading());
-            Serial.flush();
+          case 'p': // gp left or right
+
+            switch(command[2]) {
+
+              case 'l':
+                Serial.println(getPingLeft());
+                Serial.flush();
+                break;
+              case 'r':
+                Serial.println(getPingRight());
+                Serial.flush();
+                break;
+            }
+            
           break;
         }
         
