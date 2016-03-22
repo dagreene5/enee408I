@@ -106,7 +106,7 @@ class LinkedList(object):
 
     def enqueue(self, data):
         new_node = Node(data);
-        self.tail.next_node = new_node;
+        self.tail.set_next(new_node);
         self.tail = self.tail.next_node;
 
     def size(self):
@@ -175,8 +175,8 @@ while (1):
         dx = getDx();
         print("Dx: " + str(dx));
         head = movingAverageList.dequeue();
-        movingAverageList.enqueue(dx);
-        movingSum -= head;
+        movingAverageList.enqueue(Node(dx));
+        movingSum -= head.getData();
         movingSum += dx;
         scaled = movingSum / numAverages;
         print("Scaled: " + str(dx));
