@@ -83,6 +83,8 @@ def getDx():
     x,y = struct.unpack( "bb", buf[1: ]);
     return x;
 
+def objectDetected(distance):
+    return distance != 0 and distance < 20;
 
 port.flush();
 #setBoth(50);
@@ -102,19 +104,20 @@ while (1):
     distanceLeft = getPingLeft();
     distanceRight = getPingRight();
 
-    if ((distanceLeft != 0 and distanceLeft < 20) or
-        (distanceRight != 0 and distanceRight < 20)):
-        print("distance is too small, rotating\n");
-        halt();
+    if (objectDetected(distanceLeft)):
+        rotateCounterClockwise();
+    else if (objectDetected(distanceRight):        
         rotateClockwise();
-        setBoth(50);
-        while ((distanceLeft != 0 and distanceLeft < 20) or
-            (distanceRight != 0 and distanceRight < 20)):
-            distanceLeft = getPingLeft();
-            distanceRight = getPingRight();
-        halt();
-        moveForward();
-        setBoth(50);
+
+    while (objectDetected(distanceLeft) or
+        objectDetected(distanceRight)):
+
+        distanceLeft = getPingLeft();
+        distanceRight = getPingRight();
+        
+    halt();
+    moveForward();
+    setBoth(50);
         
     else:
         print("moving forward\n");
