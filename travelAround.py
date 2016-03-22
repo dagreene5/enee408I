@@ -138,9 +138,9 @@ numAverages = 10;
 movingAverageList = LinkedList();
 movingSum = 0;
 print("Initializing moving average...\n");
-while (movingAverageList.size < numAverages):
+while (movingAverageList.size() < numAverages):
     movingAverageList.enqueue(0);
-print("Moving average initialized with " + str(movingAverageList.size) + " values\n");
+print("Moving average initialized with " + str(movingAverageList.size()) + " values\n");
 
 moveForward();
 setRight(30);
