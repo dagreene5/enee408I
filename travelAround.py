@@ -106,7 +106,7 @@ while (1):
 
     if (objectDetected(distanceLeft)):
         rotateCounterClockwise();
-    else if (objectDetected(distanceRight):        
+    else if (objectDetected(distanceRight)):        
         rotateClockwise();
 
     while (objectDetected(distanceLeft) or
