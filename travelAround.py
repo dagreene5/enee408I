@@ -117,7 +117,7 @@ class LinkedList(object):
             current = current.get_next();
         return count;
 
-    def dequeue():
+    def dequeue(self):
         temp = self.head;
         self.head = self.head.next_node;
         return temp;
