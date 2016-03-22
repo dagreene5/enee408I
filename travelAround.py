@@ -84,16 +84,63 @@ def getDx():
 def objectDetected(distance):
     return distance != 0 and distance < 20;
 
+class Node(object):
+
+    def __init__(self, data=None, next_node=None):
+        self.data = data;
+        self.next_node = next_node;
+
+    def get_data(self):
+        return self.data;
+
+    def get_next(self):
+        return self.next_node;
+
+    def set_next(self, new_next):
+        self.next_node = new_next;
+
+class LinkedList(object):
+    def __init__(self, head=None):
+        self.head = head;
+        self.tail = head;
+
+    def enqueue(self, data):
+        new_node = Node(data);
+        self.tail.set_next(new_node);
+        self.tail = self.tail.next_node;
+
+    def size(self):
+        current = self.head;
+        count = 0;
+        while current:
+            count += 1;
+            current = current.get_next();
+        return count;
+
+    def dequeue():
+        temp = self.head;
+        self.head = self.head.next_node;
+        return temp;
+
+
 port.flush();
 #setBoth(50);
 port.flush();
 
-# stupid initialization
+# stupid initialization: flush buffer
 response = "";
 while (response == ""):
     port.write("gple");
     port.flush();
     response = port.readline();
+
+numAverages = 10;
+movingAverageList = LinkedList();
+movingSum = 0;
+print("Initializing moving average...\n");
+while (movingAverageList.size < numAverages):
+    movingAverageList.enqueue(0);
+print("Moving average initialized with " + str(movingAverageList.size) + " values\n");
 
 moveForward();
 setRight(30);
@@ -126,8 +173,14 @@ while (1):
         moveForward();
         dx = getDx();
         print("Dx: " + str(dx));
-        #incrementLeft(-dx);
-        #incrementRight(dx);
+        head = movingAverageList.dequeue();
+        movingAverageList.enqueue(dx);
+        movingSum -= head;
+        movingSum += dx;
+        scaled = movingSum / numAverages;
+        print("Scaled: " + str(dx));
+        #incrementLeft(-scaled);
+        #incrementRight(scaled);
         
 
 file.close();
