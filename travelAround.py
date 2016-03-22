@@ -6,57 +6,57 @@ port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=.01);   # communicat
 file = open( "/dev/input/mice", "rb");                              # for optical input
 
 def setLeft(pwm):
-    port.write("sl " + str(pwm) + "\n");
+    port.write("sl " + str(pwm) + "e");
     return;
 
 def setRight(pwm):
-    port.write("sr " + str(pwm) + "\n");
+    port.write("sr " + str(pwm) + "e");
     return;
 
 def setBoth(pwm):
-    port.write("sb " + str(pwm) + "\n");
+    port.write("sb " + str(pwm) + "e");
     return;
 
 def incrementLeft(pwm):
-    port.write("il " + str(pwm) + "\n");
+    port.write("il " + str(pwm) + "e");
     return;
 
 def incrementRight(pwm):
-    port.write("ir " + str(pwm) + "\n");
+    port.write("ir " + str(pwm) + "e");
     return;
 
 def halt():
-    port.write("h\n");
+    port.write("he");
     return;
 
 def rotateClockwise():
-    port.write("smcw\n");
+    port.write("smcwe");
     return;
 
 def rotateCounterClockwise():
-    port.write("smcc\n");
+    port.write("smcce");
     return;
 
 def moveForward():
-    port.write("smf\n");
+    port.write("smfe");
     return;
 
 def moveBackward():
-    port.write("smb\n");
+    port.write("smbe");
     return;
 
 def getPing():
-    port.write("gp\n");
+    port.write("gpe");
     ret = port.readline();
     print("ping returned: " + ret);
     return int(ret);
 
 def getLeftPWM():
-    port.write("gl\n");
+    port.write("gle");
     return int(port.readline().rstrip());
 
 def getRightPWM():
-    port.write("gr\n");
+    port.write("gre");
     return port.readline();
 
 def getMouseEvent():
@@ -66,7 +66,7 @@ def getMouseEvent():
     # bMiddle = ( button & 0x4 ) > 0;
     # bRight = ( button & 0x2 ) > 0;
     x,y = struct.unpack( "bb", buf[1:] );
-    port.write("il " + str(-x) + "\nir " + str(x) + "\n");
+    port.write("il " + str(-x) + "\nir " + str(x) + "e");
     port.flush();
     # print ("L:%d, M: %d, R: %d, x: %d, y: %d\n" % (bLeft,bMiddle,bRight,x,y));
     # return
@@ -84,7 +84,7 @@ port.flush();
 
 while (1):
     distance = getPing();
-    print("distance: " + str(distance) + "\n");
+    print("distance: " + str(distance) + "e");
     if (distance != 0 and distance < 20):
         print("distance is too small, rotating\n");
         halt();
