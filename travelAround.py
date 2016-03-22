@@ -85,7 +85,6 @@ while (1):
     port.write("gpe");
     port.flush();
     print("arduino response1: " + port.readline());
-    print("arduino response2: " + port.readline());
 '''
 while (1):
 

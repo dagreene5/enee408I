@@ -89,7 +89,6 @@ void readFromSerial() {
       if (received == 'e') {
 
         executeCommand(serialInput);
-        Serial.println("Read a command");
         serialInput = "";
         
       } else {
