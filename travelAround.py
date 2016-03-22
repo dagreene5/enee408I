@@ -104,20 +104,23 @@ while (1):
     distanceLeft = getPingLeft();
     distanceRight = getPingRight();
 
-    if (objectDetected(distanceLeft)):
-        rotateCounterClockwise();
-    elif (objectDetected(distanceRight)):        
-        rotateClockwise();
-
-    while (objectDetected(distanceLeft) or
+    if (objectDetected(distanceLeft) or
         objectDetected(distanceRight)):
+    
+        if (objectDetected(distanceLeft)):
+            rotateCounterClockwise();
+        elif (objectDetected(distanceRight)):        
+            rotateClockwise();
 
-        distanceLeft = getPingLeft();
-        distanceRight = getPingRight();
-        
-    halt();
-    moveForward();
-    setBoth(50);
+        while (objectDetected(distanceLeft) or
+            objectDetected(distanceRight)):
+
+            distanceLeft = getPingLeft();
+            distanceRight = getPingRight();
+            
+        halt();
+        moveForward();
+        setBoth(50);
         
     else:
         print("moving forward\n");
