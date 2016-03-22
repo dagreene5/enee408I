@@ -195,8 +195,9 @@ while (1):
         moveForward();
         dx = getDx();
         dx = dx / 10;
-        print("Dx: " + str(dx));
+        print("Scaled dx: " + str(dx));
         head = movingAverageList.dequeue();
+        Print("Value dequeued: " + str(head.get_data()));
         movingAverageList.enqueue(dx);
         movingSum -= head.get_data();
         movingSum += dx;
