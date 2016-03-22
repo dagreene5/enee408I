@@ -90,11 +90,14 @@ port.flush();
 
 # stupid initialization
 response = "";
-while (response == ""):
+while (1):#response == ""):
     port.write("gple");
     port.flush();
-    response = port.readline();
-
+    print("readleft: " + port.readline());
+    port.write("gpre");
+    print("readrightt: " + port.readline());
+    #response = port.readline();
+'''
 moveForward();
 setBoth(50);
 while (1):
@@ -121,6 +124,6 @@ while (1):
         dx = getDx();
         incrementLeft(-dx);
         incrementRight(dx);
-        
+'''        
 
 file.close();
