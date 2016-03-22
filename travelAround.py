@@ -176,7 +176,7 @@ while (1):
         print("Dx: " + str(dx));
         head = movingAverageList.dequeue();
         movingAverageList.enqueue(Node(dx));
-        movingSum -= head.getData();
+        movingSum -= head.get_data();
         movingSum += dx;
         scaled = movingSum / numAverages;
         print("Scaled: " + str(dx));
