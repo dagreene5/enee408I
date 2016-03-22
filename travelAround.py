@@ -135,7 +135,7 @@ while (response == ""):
     response = port.readline();
 
 numAverages = 10;
-movingAverageList = LinkedList();
+movingAverageList = LinkedList(0);
 movingSum = 0;
 print("Initializing moving average...\n");
 while (movingAverageList.size() < numAverages):
