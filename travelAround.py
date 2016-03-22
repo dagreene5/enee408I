@@ -81,10 +81,20 @@ def getDx():
 port.flush();
 #setBoth(50);
 port.flush();
-while (1):
+
+# stupid initialization
+response = "";
+while (response == ""):
     port.write("gpe");
     port.flush();
-    print("arduino response1: " + port.readline());
+    response = port.readline();
+
+port.write("gpe");
+print("Write after loop: " + port.readline());
+port.write("gpe");
+print("Write after loop: " + port.readline());
+port.write("gpe");
+print("Write after loop: " + port.readline());
 '''
 while (1):
 
