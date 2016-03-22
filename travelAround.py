@@ -126,8 +126,8 @@ while (1):
         moveForward();
         dx = getDx();
         print("Dx: " + str(dx));
-        incrementLeft(-dx);
-        incrementRight(dx);
+        #incrementLeft(-dx);
+        #incrementRight(dx);
         
 
 file.close();
