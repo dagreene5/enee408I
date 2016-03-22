@@ -5,6 +5,9 @@ import serial
 port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communication with arduino
 file = open( "/dev/input/mice", "rb");                              # for optical input
 
+maxPwm = 60;
+minPwm = -60;
+
 def setLeft(pwm):
     port.write("sl " + str(pwm) + "e");
     return;
@@ -23,6 +26,24 @@ def incrementLeft(pwm):
 
 def incrementRight(pwm):
     port.write("ir " + str(pwm) + "e");
+    return;
+
+def incrementLeftToMax(pwm):
+    port.write("il " + str(pwm) + "e");
+    leftPwm = getLeftPWM();
+    if (leftPwm > maxPwm):
+        setLeft(maxPwm);
+    elif (leftPwm < minPwm):
+        setLeft(minPwm);
+    return;
+
+def incrementRightToMax(pwm):
+    port.write("ir " + str(pwm) + "e");
+    rightPwm = getRightPWM();
+    if (rightPwm > maxPwm):
+        setRight(maxPwm);
+    elif (rightPwm < minPwm):
+        setRight(minPwm);
     return;
 
 def halt():
@@ -181,8 +202,7 @@ while (1):
         movingSum += dx;
         scaled = movingSum / numAverages;
         print("Scaled: " + str(dx));
-        incrementLeft(-scaled);
-        incrementRight(scaled);
-        
+        incrementLeftToMax(scaled);
+        incrementRightToMax(-scaled);
 
 file.close();
