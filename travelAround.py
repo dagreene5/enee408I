@@ -98,7 +98,8 @@ while (response == ""):
     response = port.readline();
 
 moveForward();
-setBoth(30);
+setRight(30);
+setLeft(40);
 while (1):
 
     distanceLeft = getPingLeft();
@@ -120,7 +121,8 @@ while (1):
             
         halt();
         moveForward();
-        setBoth(30);
+        setRight(30);
+        setLeft(40);
         
     else:
         print("moving forward\n");
