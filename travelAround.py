@@ -2,7 +2,7 @@
 import struct
 import serial
 
-port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=.01);   # communication with arduino
+port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=100);   # communication with arduino
 file = open( "/dev/input/mice", "rb");                              # for optical input
 
 def setLeft(pwm):
