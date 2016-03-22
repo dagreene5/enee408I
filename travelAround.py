@@ -125,7 +125,7 @@ while (1):
     else:
         moveForward();
         dx = getDx();
-        print("Dx: " + dx);
+        print("Dx: " + str(dx));
         incrementLeft(-dx);
         incrementRight(dx);
         
