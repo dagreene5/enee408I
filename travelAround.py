@@ -106,7 +106,7 @@ class LinkedList(object):
 
     def enqueue(self, data):
         new_node = Node(data);
-        self.tail.set_next(new_node);
+        self.tail.next_node = new_node;
         self.tail = self.tail.next_node;
 
     def size(self):
