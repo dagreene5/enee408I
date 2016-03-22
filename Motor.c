@@ -75,23 +75,23 @@ void setPWMs(int pwm) {
 }
 
 void setLeftForward() {
-   digitalWrite(leftMotor.digitalPin1, LOW);
-   digitalWrite(leftMotor.digitalPin2, HIGH);  
+   digitalWrite(leftMotor.digitalPin1, HIGH);
+   digitalWrite(leftMotor.digitalPin2, LOW);  
    leftMotor.digital1Low = 1;
 }
 void setLeftBackward() {
-   digitalWrite(leftMotor.digitalPin1, HIGH);
-   digitalWrite(leftMotor.digitalPin2, LOW);  
+   digitalWrite(leftMotor.digitalPin1, LOW);
+   digitalWrite(leftMotor.digitalPin2, HIGH);  
    leftMotor.digital1Low = 0;
 }
 void setRightForward() {
-   digitalWrite(rightMotor.digitalPin1, LOW);
-   digitalWrite(rightMotor.digitalPin2, HIGH);  
+   digitalWrite(rightMotor.digitalPin1, HIGH);
+   digitalWrite(rightMotor.digitalPin2, LOW);  
    rightMotor.digital1Low = 1;
 }
 void setRightBackward() {
-   digitalWrite(rightMotor.digitalPin1, HIGH);
-   digitalWrite(rightMotor.digitalPin2, LOW);  
+   digitalWrite(rightMotor.digitalPin1, LOW);
+   digitalWrite(rightMotor.digitalPin2, HIGH);  
    rightMotor.digital1Low = 0;
 }
 void setRotateClockwise() {
