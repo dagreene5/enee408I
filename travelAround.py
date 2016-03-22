@@ -81,9 +81,10 @@ def getDx():
 port.flush();
 #setBoth(50);
 port.flush();
-port.write("gpe");
-port.flush();
-print("arduino response: " + port.readline());
+while (1):
+    port.write("gpe");
+    port.flush();
+    print("arduino response: " + port.readline());
 '''
 while (1):
 
