@@ -7,70 +7,56 @@ file = open( "/dev/input/mice", "rb");                              # for optica
 
 def setLeft(pwm):
     port.write("sl " + str(pwm) + "\n");
-    port.flush();
     return;
 
 def setRight(pwm):
     port.write("sr " + str(pwm) + "\n");
-    port.flush();
     return;
 
 def setBoth(pwm):
     port.write("sb " + str(pwm) + "\n");
-    port.flush();
     return;
 
 def incrementLeft(pwm):
     port.write("il " + str(pwm) + "\n");
-    port.flush();
     return;
 
 def incrementRight(pwm):
     port.write("ir " + str(pwm) + "\n");
-    port.flush();
     return;
 
 def halt():
     port.write("h\n");
-    port.flush();
     return;
 
 def rotateClockwise():
     port.write("smcw\n");
-    port.flush();
     return;
 
 def rotateCounterClockwise():
     port.write("smcc\n");
-    port.flush();
     return;
 
 def moveForward():
     port.write("smf\n");
-    port.flush();
     return;
 
 def moveBackward():
     port.write("smb\n");
-    port.flush();
     return;
 
 def getPing():
-    port.flush();
     port.write("gp\n");
-    port.flush();
     ret = port.readline();
     print("ping returned: " + ret);
     return int(ret.rstrip());
 
 def getLeftPWM():
     port.write("gl\n");
-    port.flush();
     return int(port.readline().rstrip());
 
 def getRightPWM():
     port.write("gr\n");
-    port.flush();
     return port.readline();
 
 def getMouseEvent():
