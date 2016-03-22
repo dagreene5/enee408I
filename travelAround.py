@@ -49,7 +49,7 @@ def getPing():
     port.write("gp\n");
     ret = port.readline();
     print("ping returned: " + ret);
-    return int(ret.rstrip());
+    return int(ret);
 
 def getLeftPWM():
     port.write("gl\n");
