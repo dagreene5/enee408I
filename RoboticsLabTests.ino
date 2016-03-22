@@ -86,10 +86,10 @@ void readFromSerial() {
       char received = Serial.read();
 
       // end of command
-      if (received == '\n') {
+      if (received == 'e') {
 
         executeCommand(serialInput);
-        
+        Serial.println("Read a command");
         serialInput = "";
         
       } else {
