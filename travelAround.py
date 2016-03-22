@@ -98,7 +98,7 @@ while (response == ""):
     response = port.readline();
 
 moveForward();
-setBoth(50);
+setBoth(30);
 while (1):
 
     distanceLeft = getPingLeft();
@@ -106,7 +106,7 @@ while (1):
 
     if (objectDetected(distanceLeft) or
         objectDetected(distanceRight)):
-    
+
         if (objectDetected(distanceLeft)):
             rotateCounterClockwise();
         elif (objectDetected(distanceRight)):        
@@ -120,7 +120,7 @@ while (1):
             
         halt();
         moveForward();
-        setBoth(50);
+        setBoth(30);
         
     else:
         print("moving forward\n");
