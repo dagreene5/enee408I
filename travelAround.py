@@ -79,10 +79,13 @@ def getDx():
 
 
 port.flush();
-setBoth(50);
+#setBoth(50);
 port.flush();
-
+port.write("gpe");
+port.flush();
+'''
 while (1):
+
     distance = getPing();
     print("distance: " + str(distance) + "e");
     if (distance != 0 and distance < 20):
@@ -101,5 +104,5 @@ while (1):
         dx = getDx();
         incrementLeft(-dx);
         incrementRight(dx);
-
+'''
 file.close();
