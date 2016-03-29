@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import struct
 import sys
-sys.path.insert(0, '/PixyCode/build/libpixyusb_swig')
 import pixy
 import serial
 
