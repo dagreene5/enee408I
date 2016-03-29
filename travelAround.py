@@ -8,6 +8,7 @@ file = open( "/dev/input/mice", "rb");                              # for optica
 maxPwm = 60;
 minPwm = -60;
 
+
 def setLeft(pwm):
     port.write("sl " + str(pwm) + "e");
     return;
@@ -102,6 +103,11 @@ def getDx():
     x,y = struct.unpack( "bb", buf[1: ]);
     return x;
 
+def travelForward():
+    moveForward();
+    setRight(30);
+    setLeft(40);
+
 def objectDetected(distance):
     return distance != 0 and distance < 20;
 
@@ -155,18 +161,6 @@ while (response == ""):
     port.flush();
     response = port.readline();
 
-numAverages = 10;
-firstNode = Node(0);
-movingAverageList = LinkedList(firstNode);
-movingSum = 0;
-print("Initializing moving average...\n");
-while (movingAverageList.size() < numAverages):
-    movingAverageList.enqueue(0);
-print("Moving average initialized with " + str(movingAverageList.size()) + " values\n");
-
-moveForward();
-setRight(30);
-setLeft(40);
 while (1):
 
     distanceLeft = getPingLeft();
@@ -187,23 +181,10 @@ while (1):
             distanceRight = getPingRight();
             
         halt();
-        moveForward();
-        setRight(30);
-        setLeft(40);
+        travelForward();
         
     else:
-        moveForward();
-        dx = getDx();
-        dx = dx / 10;
-        print("Scaled dx: " + str(dx));
-        head = movingAverageList.dequeue();
-        Print("Value dequeued: " + str(head.get_data()));
-        movingAverageList.enqueue(dx);
-        movingSum -= head.get_data();
-        movingSum += dx;
-        scaled = movingSum / numAverages;
-        print("Scaled: " + str(dx));
-        incrementLeftToMax(scaled);
-        incrementRightToMax(-scaled);
+        travelForward();
+       
 
 file.close();
