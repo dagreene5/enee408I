@@ -326,7 +326,7 @@ signature_cone_high = 1
 
 def look_for_cone():
     count = pixy_get_blocks(100, blocks)
-
+    Print("look for cone count: " + str(count));
     if (count > 0):
         frame = frame + 1
         for index in range (0, count):
