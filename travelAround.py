@@ -328,7 +328,7 @@ def look_for_cone():
     print("look for cone count: " + str(count));
     if (count > 0):
         for index in range (0, count):
-            Print("Signature: " + str(blocks[index].signature));
+            print("Signature: " + str(blocks[index].signature));
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
                 print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
 
