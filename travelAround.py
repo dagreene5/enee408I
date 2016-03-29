@@ -330,6 +330,7 @@ def look_for_cone():
     if (count > 0):
         frame = frame + 1
         for index in range (0, count):
+            Print("Signature: " + str(blocks[index].signature));
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
                 print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
 
