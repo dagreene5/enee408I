@@ -343,7 +343,8 @@ def look_for_cone():
                 print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
                 move_towards_cone(blocks[index].x, blocks[index].y);
             break
-
+    else: # no condes in field of view
+        rotateClockwise();
 
 
 
