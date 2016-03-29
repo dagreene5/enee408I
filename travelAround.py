@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import struct
 import sys
-import pixy
+import_module(pixy)
 import serial
 
 port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communication with arduino
