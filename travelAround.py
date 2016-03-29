@@ -187,7 +187,7 @@ def look_for_cone():
         frame = frame + 1
         for index in range (0, count):
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high
-                print 'Found cone at: [BLOCK_TYPE=%d SIG=%d X=%3d Y=%3d WIDTH=%3d HEIGHT=%3d]' % (blocks[index].type, blocks[index].signature, blocks[index].x, blocks[index].y, blocks[index].width, blocks[index].height)
+                print ('Found cone at: [BLOCK_TYPE=%d SIG=%d X=%3d Y=%3d WIDTH=%3d HEIGHT=%3d]' % (blocks[index].type, blocks[index].signature, blocks[index].x, blocks[index].y, blocks[index].width, blocks[index].height))
 
 
 
