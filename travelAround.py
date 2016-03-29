@@ -325,7 +325,7 @@ signature_cone_high = 1
 low_x_bound = 135
 high_x_bound = 165
 
-def mov_towards_cone(x, y):
+def move_towards_cone(x, y):
     if (low_x_bound <= x <= high_x_bound):
         travelForward();
     elif (low_x_bound >= x):
