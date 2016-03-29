@@ -319,7 +319,6 @@ class Blocks (Structure):
                ("height", c_uint),
                ("angle", c_uint) ]
 blocks = BlockArray(100)
-frame  = 0
 
 signature_cone_low = 1
 signature_cone_high = 1
@@ -328,7 +327,6 @@ def look_for_cone():
     count = pixy_get_blocks(100, blocks)
     print("look for cone count: " + str(count));
     if (count > 0):
-        frame = frame + 1
         for index in range (0, count):
             Print("Signature: " + str(blocks[index].signature));
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
