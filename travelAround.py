@@ -322,15 +322,27 @@ blocks = BlockArray(100)
 
 signature_cone_low = 1
 signature_cone_high = 1
+low_x_bound = 135
+high_x_bound = 165
+
+def mov_towards_cone(x, y):
+    if (low_x_bound <= x <= high_x_bound):
+        travelForward();
+    elif: (low_x_bound >= x):
+        rotateCounterClockwise();
+    else:
+        rotateClockwise();
+
 
 def look_for_cone():
     count = pixy_get_blocks(100, blocks)
-    print("look for cone count: " + str(count));
     if (count > 0):
         for index in range (0, count):
             print("Signature: " + str(blocks[index].signature));
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
                 print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
+                move_towards_cone(blocks[index].x, blocks[index].y);
+            break
 
 
 
