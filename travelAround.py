@@ -177,8 +177,8 @@ class Blocks (Structure):
 blocks = BlockArray(100)
 frame  = 0
 
-signature_cone_low = 0
-signature_cone_high = 10
+signature_cone_low = 1
+signature_cone_high = 1
 
 def look_for_cone():
     count = pixy_get_blocks(100, blocks)
