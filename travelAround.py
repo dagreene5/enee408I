@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import struct
+import sys
 sys.path.insert(0, '/PixyCode/build/libpixyusb_swig')
-import pixy.py
+import pixy
 import serial
 
 port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communication with arduino
@@ -186,8 +187,8 @@ def look_for_cone():
     if (count > 0):
         frame = frame + 1
         for index in range (0, count):
-            if (signature_cone_low <= blocks[index].signature <= signature_cone_high
-                print 'Found cone at: [BLOCK_TYPE=%d SIG=%d X=%3d Y=%3d WIDTH=%3d HEIGHT=%3d]' % (blocks[index].type, blocks[index].signature, blocks[index].x, blocks[index].y, blocks[index].width, blocks[index].height)
+            if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
+                print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
 
 
 
