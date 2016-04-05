@@ -256,18 +256,18 @@ def getDx():
 
 def travelForward():
     moveForward();
-    setRight(60);
-    setLeft(80);
+    setRight(40);
+    setLeft(60);
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(60)
-    setRight(80)
+    setLeft(40)
+    setRight(60)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(60)
-    setRight(80)
+    setLeft(40)
+    setRight(60)
 
 def objectDetected(distance):
     return distance != 0 and distance < 20;
@@ -360,14 +360,14 @@ def move_to_open_space():
         if (distanceRight == 0):    # open space
             travelForward()
         else:                       # left is clear, rotate that direction
-            rotateCounterClockwise()
+            travelCounterClockwise()
     elif (distanceRight == 0):      # right is clear, rotate that direction
-        rotateClockwise()
+        travelClockwise()
     else:                           # go in the more open direction
         if (distanceRight < distanceLeft):  # more immediate obstacle right, go left
-            rotateCounterClockwise();
+            travelCounterClockwise();
         else:
-            rotateClockwise();
+            travelClockwise();
 
 def move_towards_coordinate(x, y):
     if (low_x_bound <= x <= high_x_bound):
