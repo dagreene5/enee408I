@@ -256,21 +256,24 @@ def getDx():
 
 def travelForward():
     moveForward();
-    setRight(40);
-    setLeft(60);
+    setRight(30);
+    setLeft(40);
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(40)
-    setRight(60)
+    setLeft(30)
+    setRight(40)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(40)
-    setRight(60)
+    setLeft(30)
+    setRight(40)
 
 def objectDetected(distance):
     return distance != 0 and distance < 20;
+
+def is_clear(distance):
+    return distance == 0 or distance >= 20;
 
 class Node(object):
 
@@ -351,17 +354,19 @@ minConeCarryDistance = 10
 
 state = looking_for_cone
 
+
+
 def move_to_open_space():
     print("Moving to open space")
     distanceLeft = getPingLeft();
     distanceRight = getPingRight();
 
-    if (distanceLeft == 0):
-        if (distanceRight == 0):    # open space
+    if (is_clear(distanceLeft)):
+        if (is_clear(distanceRight)):    # open space
             travelForward()
         else:                       # left is clear, rotate that direction
             travelCounterClockwise()
-    elif (distanceRight == 0):      # right is clear, rotate that direction
+    elif (is_clear(distanceRight)):      # right is clear, rotate that direction
         travelClockwise()
     else:                           # go in the more open direction
         if (distanceRight < distanceLeft):  # more immediate obstacle right, go left
