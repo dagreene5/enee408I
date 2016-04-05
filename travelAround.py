@@ -384,7 +384,7 @@ def look_for_cone():
                 move_towards_coordinate(blocks[index].x, blocks[index].y);
                 if (verify_carrying_cone()):
                     print("Changing state to searching for delivery area")
-                    global state = global delivering_cone
+                    global state = delivering_cone
             break
     else: # no cones in field of view
         move_to_open_space()        # blind search in most open direction
@@ -393,7 +393,7 @@ def deliver_cone():
     print("delivering cone")
     if (not (verify_carrying_cone())):
         print("Cone is too far away, changing state to look for cone")
-        global state = global looking_for_cone
+        global state = looking_for_cone
 
     coneSigFound = False
     count = pixy_get_blocks(100, blocks)
