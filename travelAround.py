@@ -373,9 +373,9 @@ def move_towards_coordinate(x, y):
     if (low_x_bound <= x <= high_x_bound):
         travelForward();
     elif (low_x_bound >= x):
-        rotateCounterClockwise();
+        travelCounterClockwise();
     else:
-        rotateClockwise();
+        travelClockwise();
 
 def verify_carrying_cone():
     coneDistance = getPingCenter();     # if the cone is close enough infront of us, transition phase to delivering
@@ -450,9 +450,9 @@ while (1):
 
 	print("Evading object")
         if (objectDetected(distanceLeft)):
-            rotateCounterClockwise();
+            travelCounterClockwise();
         elif (objectDetected(distanceRight)):        
-            rotateClockwise();
+            travelClockwise();
 
         while (objectDetected(distanceLeft) or
             objectDetected(distanceRight)):
