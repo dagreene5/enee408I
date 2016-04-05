@@ -42,7 +42,7 @@ void setup() {
   // left pins, then right pins
   init_Motors(digital2, digital4, pwm5,
     digital8, digital7, pwm3);
-  init_Ping(digital12, digital13);
+  init_Ping(digital12, digital13, digital11);
   Serial.begin(9600);
 }
 
@@ -93,6 +93,7 @@ void readFromSerial() {
  * 
  * gpl : get left ping reading
  * gpr : get right ping reading
+ * gpc : get center ping reading
  */
 void executeCommand(String command) {
 
@@ -137,6 +138,11 @@ void executeCommand(String command) {
                 break;
               case 'r':
                 Serial.println(getPingRight());
+                Serial.flush();
+                break;
+
+              case 'c':
+                Serial.println(getPingCenter());
                 Serial.flush();
                 break;
             }
