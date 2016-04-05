@@ -389,7 +389,7 @@ def look_for_cone():
         move_to_open_space()        # blind search in most open direction
 
 def deliver_cone():
-    if (!verify_carrying_cone()):
+    if (not (verify_carrying_cone())):
         print("Cone is too far away, changing state to look for cone")
         state = looking_for_cone
 
@@ -421,6 +421,7 @@ while (1):
     if (objectDetected(distanceLeft) or
         objectDetected(distanceRight)):
 
+	print("Evading object")
         if (objectDetected(distanceLeft)):
             rotateCounterClockwise();
         elif (objectDetected(distanceRight)):        
