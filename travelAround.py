@@ -390,6 +390,7 @@ def look_for_cone():
         move_to_open_space()        # blind search in most open direction
 
 def deliver_cone():
+    print("delivering cone")
     if (not (verify_carrying_cone())):
         print("Cone is too far away, changing state to look for cone")
         state = looking_for_cone
@@ -401,13 +402,13 @@ def deliver_cone():
             if (blocks[index].signature == signature_collection_box):
                 print("Identified collection at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
                 move_towards_coordinate(blocks[index].x, blocks[index].y);
-
+                break
                 # check y coordinate...
-            if (blocks[index].signature == signature_cone_low):
-                coneSigFound = True
-        if (coneSigFound == False):
-            print("Cone signature was not found, going back to looking for cone")
-            state = looking_for_cone
+            #if (blocks[index].signature == signature_cone_low):
+            #    coneSigFound = True
+        #if (coneSigFound == False):
+         #   print("Cone signature was not found, going back to looking for cone")
+          #  state = looking_for_cone
     else: # no cones in field of view
         move_to_open_space()        # blind search in most open direction
 
