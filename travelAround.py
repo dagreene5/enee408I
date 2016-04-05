@@ -256,8 +256,18 @@ def getDx():
 
 def travelForward():
     moveForward();
-    setRight(30);
-    setLeft(40);
+    setRight(60);
+    setLeft(80);
+
+def travelClockwise():
+    rotateClockwise()
+    setLeft(60)
+    setRight(80)
+
+def travelCounterClockwise():
+    rotateCounterClockwise()
+    setLeft(60)
+    setRight(80)
 
 def objectDetected(distance):
     return distance != 0 and distance < 20;
