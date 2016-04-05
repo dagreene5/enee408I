@@ -370,9 +370,9 @@ def verify_carrying_cone():
     coneDistance = getPingCenter();     # if the cone is close enough infront of us, transition phase to delivering
     print("cone distance: " + str(coneDistance))
     if (coneDistance < minConeCarryDistance and coneDistance != 0):
-        return true
+        return True
     else:
-        return false
+        return False
 
 def look_for_cone():
     print("looking for cone");
@@ -394,7 +394,7 @@ def deliver_cone():
         print("Cone is too far away, changing state to look for cone")
         state = looking_for_cone
 
-    coneSigFound = false
+    coneSigFound = False
     count = pixy_get_blocks(100, blocks)
     if (count > 0):
         for index in range (0, count):
@@ -404,8 +404,8 @@ def deliver_cone():
 
                 # check y coordinate...
             if (blocks[index].signature == signature_cone_low):
-                coneSigFound = true
-        if (coneSigFound == false):
+                coneSigFound = True
+        if (coneSigFound == False):
             print("Cone signature was not found, going back to looking for cone")
             state = looking_for_cone
     else: # no cones in field of view
