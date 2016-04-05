@@ -471,11 +471,11 @@ while (1):
         
     else:
         #print("state: " + str(state))
-        #move_to_open_space();
-        #if (state == looking_for_cone):
-         #   look_for_cone();
-        #elif (state == delivering_cone):
-         #   deliver_cone();
-        look_for_cone_old();
+
+        if (state == looking_for_cone):
+            look_for_cone();
+        elif (state == delivering_cone):
+            deliver_cone();
+        #look_for_cone_old();
 
 file.close();
