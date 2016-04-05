@@ -419,6 +419,7 @@ def deliver_cone():
 
 while (1):
 
+    global state
     distanceLeft = getPingLeft();
     distanceRight = getPingRight();
 
@@ -444,9 +445,9 @@ while (1):
     else:
         print("state: " + str(state))
         move_to_open_space();
-        if (global state == global looking_for_cone):
+        if (state == looking_for_cone):
             look_for_cone();
-        elif (global state == global delivering_cone):
+        elif (state == delivering_cone):
             deliver_cone();
 
 file.close();
