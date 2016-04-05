@@ -473,10 +473,10 @@ while (1):
     #else:
         #print("state: " + str(state))
 
-        if (state == looking_for_cone):
-            look_for_cone();
-        elif (state == delivering_cone):
-            deliver_cone();
+    if (state == looking_for_cone):
+        look_for_cone();
+    elif (state == delivering_cone):
+        deliver_cone();
         #look_for_cone_old();
 
 file.close();
