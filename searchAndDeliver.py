@@ -355,75 +355,6 @@ min_obstacle_distance = 30
 global state
 state = state_searching
 
-
-def move_towards_coordinate(x, y):
-    if (low_x_bound <= x <= high_x_bound):
-        travelForward();
-    elif (low_x_bound >= x):
-        travelCounterClockwise();
-    else:
-        travelClockwise();
-
-def verify_carrying_cone():
-    coneDistance = getPingCenter();     # if the cone is close enough infront of us, transition phase to delivering
-    print("cone distance: " + str(coneDistance))
-    if (coneDistance < minConeCarryDistance and coneDistance != 0):
-        return True
-    else:
-        return False
-
-def look_for_cone_old():
-    count = pixy_get_blocks(100, blocks)
-    if (count > 0):
-        for index in range (0, count):
-            if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
-                print("Identified cone at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
-                move_towards_coordinate(blocks[index].x, blocks[index].y);
-            break
-    else: # no cones in field of view
-        move_to_open_space()        # blind search in most open direction
-
-def look_for_cone():
-    print("looking for cone");
-    count = pixy_get_blocks(100, blocks)
-    if (count > 0):
-        for index in range (0, count):
-            if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
-                print("Identified cone at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
-                move_towards_coordinate(blocks[index].x, blocks[index].y);
-                if (verify_carrying_cone()):
-                    print("Changing state to searching for delivery area")
-                    global state
-                    state = delivering_cone
-            break
-    else: # no cones in field of view
-        move_to_open_space()        # blind search in most open direction
-
-def deliver_cone():
-    print("delivering cone")
-    if (not (verify_carrying_cone())):
-        print("Cone is too far away, changing state to look for cone")
-        global state
-        state = looking_for_cone
-
-    coneSigFound = False
-    count = pixy_get_blocks(100, blocks)
-    if (count > 0):
-        for index in range (0, count):
-            if (blocks[index].signature == signature_collection_box):
-                print("Identified collection at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
-                move_towards_coordinate(blocks[index].x, blocks[index].y);
-                break
-                # check y coordinate...
-            #if (blocks[index].signature == signature_cone_low):
-            #    coneSigFound = True
-        #if (coneSigFound == False):
-         #   print("Cone signature was not found, going back to looking for cone")
-          #  state = looking_for_cone
-    else: # no cones in field of view
-        move_to_open_space()        # blind search in most open direction
-
-
 def find_signature(blocks, count, signature):
     if (count > 0):
         for index in range (0, count):
@@ -450,7 +381,7 @@ def blind_search(leftDistance, rightDistance):
     if (obstacle_present(leftDistance)):
         if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
-            if (leftDistance < rightDistance)
+            if (leftDistance < rightDistance):
                 # left obstacle is closer. Turn right
                 travelClockwise()
             else:
@@ -523,7 +454,7 @@ while (1):
                         # dropoff area is straight ahead. Move towards it until both pings read an obstacle
                         if (obstacle_present(leftDistance)):
                             if (obstacle_present(rightDistance)):
-                                halt():         
+                                halt()      
                                 # we got it there! 
                                 # Use the accelerometer to turn around 180 degrees and start searching again
                         else:
@@ -539,7 +470,6 @@ while (1):
                 else:
                     # we do not see the collection area. For now do what we do when we don't see a cone
                     blind_search(leftDistance, rightDistance)
-
 
         else:
             # Something went wrong.. cone is not in field of view
