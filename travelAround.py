@@ -223,6 +223,11 @@ def getPingRight():
     ret = port.readline();
     return int(ret);
 
+def getPingCenter():
+    port.write("gpce");
+    ret = port.readline();
+    return int(ret);
+
 def getLeftPWM():
     port.write("gle");
     return int(port.readline().rstrip());
@@ -296,6 +301,11 @@ class LinkedList(object):
         return temp;
 
 
+#########################################################################################
+#                                   BEGIN CODE                                          #
+#########################################################################################
+
+
 port.flush();
 #setBoth(50);
 port.flush();
@@ -322,10 +332,33 @@ blocks = BlockArray(100)
 
 signature_cone_low = 1
 signature_cone_high = 1
+signature_collection_box = 2
 low_x_bound = 135
 high_x_bound = 165
+looking_for_cone = 1
+delivering_cone = 2
+minConeCarryDistance = 10
 
-def move_towards_cone(x, y):
+state = looking_for_cone
+
+def move_to_open_space():
+    distanceLeft = getPingLeft();
+    distanceRight = getPingRight();
+
+    if (distanceLeft == 0):
+        if (distanceRight == 0):    # open space
+            travelForward()
+        else:                       # left is clear, rotate that direction
+            rotateCounterClockwise()
+    elif (distanceRight == 0):      # right is clear, rotate that direction
+        rotateClockwise()
+    else:                           # go in the more open direction
+        if (distanceRight < distanceLeft):  # more immediate obstacle right, go left
+            rotateCounterClockwise();
+        else:
+            rotateClockwise();
+
+def move_towards_coordinate(x, y):
     if (low_x_bound <= x <= high_x_bound):
         travelForward();
     elif (low_x_bound >= x):
@@ -333,18 +366,50 @@ def move_towards_cone(x, y):
     else:
         rotateClockwise();
 
+def verify_carrying_cone():
+    coneDistance = getPingCenter();     # if the cone is close enough infront of us, transition phase to delivering
+    print("cone distance: " + coneDistance)
+    if (coneDistance < minConeCarryDistance and coneDistance != 0):
+        return true
+    else:
+        return false
 
 def look_for_cone():
     count = pixy_get_blocks(100, blocks)
     if (count > 0):
         for index in range (0, count):
-            print("Signature: " + str(blocks[index].signature));
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
-                print("x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
-                move_towards_cone(blocks[index].x, blocks[index].y);
+                print("Identified cone at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
+                move_towards_coordinate(blocks[index].x, blocks[index].y);
+                if (verify_carrying_cone()):
+                    print("Changing state to searching for delivery area")
+                    state = delivering_cone
             break
-    else: # no condes in field of view
-        rotateClockwise();
+    else: # no cones in field of view
+        move_to_open_space()        # blind search in most open direction
+
+def deliver_cone():
+    if (!verify_carrying_cone()):
+        print("Cone is too far away, changing state to look for cone")
+        state = looking_for_cone
+
+    coneSigFound = false
+    count = pixy_get_blocks(100, blocks)
+    if (count > 0):
+        for index in range (0, count):
+            if (blocks[index].signature == signature_collection_box):
+                print("Identified collection at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
+                move_towards_coordinate(blocks[index].x, blocks[index].y);
+
+                # check y coordinate...
+            if (blocks[index].signature == signature_cone_low):
+                coneSigFound = true
+        if (coneSigFound == false):
+            print("Cone signature was not found, going back to looking for cone")
+            state = looking_for_cone
+    else: # no cones in field of view
+        move_to_open_space()        # blind search in most open direction
+
 
 
 
@@ -368,11 +433,13 @@ while (1):
             distanceRight = getPingRight();
             
         halt();
-        travelForward();
+        move_to_open_space();
         
     else:
-        travelForward();
-        look_for_cone();
-       
+        move_to_open_space();
+        if (state == looking_for_cone):
+            look_for_cone();
+        elif (state == delivering_cone):
+            deliver_cone();
 
 file.close();

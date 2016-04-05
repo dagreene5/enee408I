@@ -3,11 +3,13 @@
 
 struct Ping ping;
 
-void init_Ping(int digitalLeft, int digitalRight) {
+void init_Ping(int digitalLeft, int digitalRight, int digitalCenter) {
   ping.digitalPinLeft = digitalLeft;
   ping.digitalPinRight = digitalRight;
+  ping.digitalPinCenter = digitalCenter;
   pinMode(ping.digitalPinLeft, OUTPUT);
   pinMode(ping.digitalPinRight, OUTPUT);
+  pinMode(ping.digitalPinCenter, OUTPUT);
 }
 void sendPulse(int pin) {
   pinMode(pin, OUTPUT);
@@ -35,6 +37,10 @@ long getPingLeft() {
 
 long getPingRight() {
   return getPingReading(ping.digitalPinRight);
+}
+
+long getPingCenter() {
+  return getPingReading(ping.digitalPinCenter);
 }
 
 
