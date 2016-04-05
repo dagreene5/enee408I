@@ -384,16 +384,18 @@ def look_for_cone():
                 move_towards_coordinate(blocks[index].x, blocks[index].y);
                 if (verify_carrying_cone()):
                     print("Changing state to searching for delivery area")
-                    state = delivering_cone
+                    return delivering_cone
             break
     else: # no cones in field of view
         move_to_open_space()        # blind search in most open direction
+        return looking_for_cone
 
 def deliver_cone():
     print("delivering cone")
     if (not (verify_carrying_cone())):
         print("Cone is too far away, changing state to look for cone")
         state = looking_for_cone
+        return looking_for_cone
 
     coneSigFound = False
     count = pixy_get_blocks(100, blocks)
@@ -402,7 +404,7 @@ def deliver_cone():
             if (blocks[index].signature == signature_collection_box):
                 print("Identified collection at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
                 move_towards_coordinate(blocks[index].x, blocks[index].y);
-                break
+                return delivering_cone
                 # check y coordinate...
             #if (blocks[index].signature == signature_cone_low):
             #    coneSigFound = True
@@ -411,6 +413,7 @@ def deliver_cone():
           #  state = looking_for_cone
     else: # no cones in field of view
         move_to_open_space()        # blind search in most open direction
+        return delivering_cone
 
 
 
@@ -443,8 +446,8 @@ while (1):
         print("state: " + str(state))
         move_to_open_space();
         if (state == looking_for_cone):
-            look_for_cone();
+            state = look_for_cone();
         elif (state == delivering_cone):
-            deliver_cone();
+            state = deliver_cone();
 
 file.close();
