@@ -342,6 +342,7 @@ minConeCarryDistance = 10
 state = looking_for_cone
 
 def move_to_open_space():
+    print("Moving to open space")
     distanceLeft = getPingLeft();
     distanceRight = getPingRight();
 
@@ -373,6 +374,17 @@ def verify_carrying_cone():
         return True
     else:
         return False
+
+def look_for_cone_old():
+    count = pixy_get_blocks(100, blocks)
+    if (count > 0):
+        for index in range (0, count):
+            if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
+                print("Identified cone at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
+                move_towards_coordinate(blocks[index].x, blocks[index].y);
+            break
+    else: # no cones in field of view
+        move_to_open_space()        # blind search in most open direction
 
 def look_for_cone():
     print("looking for cone");
@@ -443,11 +455,12 @@ while (1):
         move_to_open_space();
         
     else:
-        print("state: " + str(state))
-        move_to_open_space();
-        if (state == looking_for_cone):
-            look_for_cone();
-        elif (state == delivering_cone):
-            deliver_cone();
+        #print("state: " + str(state))
+        #move_to_open_space();
+        #if (state == looking_for_cone):
+         #   look_for_cone();
+        #elif (state == delivering_cone):
+         #   deliver_cone();
+        look_for_cone_old();
 
 file.close();
