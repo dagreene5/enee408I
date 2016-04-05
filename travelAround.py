@@ -352,6 +352,7 @@ looking_for_cone = 1
 delivering_cone = 2
 minConeCarryDistance = 10
 
+global state
 state = looking_for_cone
 
 
@@ -447,29 +448,29 @@ def deliver_cone():
 while (1):
 
     global state
-    distanceLeft = getPingLeft();
-    distanceRight = getPingRight();
+    #distanceLeft = getPingLeft();
+    #distanceRight = getPingRight();
 
-    if (objectDetected(distanceLeft) or
-        objectDetected(distanceRight)):
+   ## if (objectDetected(distanceLeft) or
+     #   objectDetected(distanceRight)):
 
-	print("Evading object")
-        if (objectDetected(distanceLeft)):
-            travelCounterClockwise();
-        elif (objectDetected(distanceRight)):        
-            travelClockwise();
+	#print("Evading object")
+     #   if (objectDetected(distanceLeft)):
+        #    travelCounterClockwise();
+      #  elif (objectDetected(distanceRight)):        
+       #     travelClockwise();
 
-        while (objectDetected(distanceLeft) or
-            objectDetected(distanceRight)):
+        #while (objectDetected(distanceLeft) or
+         #   objectDetected(distanceRight)):
 
-            distanceLeft = getPingLeft();
-            distanceRight = getPingRight();
+          #  distanceLeft = getPingLeft();
+           # distanceRight = getPingRight();
         
-        print("done")
-        halt();
-        move_to_open_space();
+        #print("done")
+        #halt();
+        #move_to_open_space();
         
-    else:
+    #else:
         #print("state: " + str(state))
 
         if (state == looking_for_cone):
