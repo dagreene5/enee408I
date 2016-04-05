@@ -440,6 +440,7 @@ while (1):
         move_to_open_space();
         
     else:
+        print("state: " + str(state))
         move_to_open_space();
         if (state == looking_for_cone):
             look_for_cone();
