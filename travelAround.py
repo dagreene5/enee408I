@@ -377,6 +377,7 @@ def verify_carrying_cone():
 def look_for_cone():
     print("looking for cone");
     count = pixy_get_blocks(100, blocks)
+    print("count: " + str(count))
     if (count > 0):
         for index in range (0, count):
             print("found signature " + str(blocks[index].signature))
