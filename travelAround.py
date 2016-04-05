@@ -379,6 +379,7 @@ def look_for_cone():
     count = pixy_get_blocks(100, blocks)
     if (count > 0):
         for index in range (0, count):
+            print("found signature " + str(blocks[index].signature))
             if (signature_cone_low <= blocks[index].signature <= signature_cone_high):
                 print("Identified cone at x: " + str(blocks[index].x) + "y: " + str(blocks[index].y));
                 move_towards_coordinate(blocks[index].x, blocks[index].y);
