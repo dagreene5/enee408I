@@ -375,6 +375,7 @@ def verify_carrying_cone():
         return false
 
 def look_for_cone():
+    print("looking for cone");
     count = pixy_get_blocks(100, blocks)
     if (count > 0):
         for index in range (0, count):
@@ -389,6 +390,7 @@ def look_for_cone():
         move_to_open_space()        # blind search in most open direction
 
 def deliver_cone():
+    print("delivering cone")
     if (not (verify_carrying_cone())):
         print("Cone is too far away, changing state to look for cone")
         state = looking_for_cone
@@ -432,7 +434,8 @@ while (1):
 
             distanceLeft = getPingLeft();
             distanceRight = getPingRight();
-            
+        
+        print("done")
         halt();
         move_to_open_space();
         
