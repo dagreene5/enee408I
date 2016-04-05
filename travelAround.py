@@ -270,10 +270,10 @@ def travelCounterClockwise():
     setRight(50)
 
 def objectDetected(distance):
-    return distance != 0 and distance < 25;
+    return distance != 0 and distance < 30;
 
 def is_clear(distance):
-    return distance == 0 or distance >= 25;
+    return distance == 0 or distance >= 30;
 
 class Node(object):
 
