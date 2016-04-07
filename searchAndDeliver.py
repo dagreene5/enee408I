@@ -254,6 +254,11 @@ def getDx():
     x,y = struct.unpack( "bb", buf[1: ]);
     return x;
 
+def travelForwardFast():
+    moveForward();
+    setRight(60);
+    setLeft(70);
+
 def travelForward():
     moveForward();
     setRight(40);
@@ -377,7 +382,7 @@ def carrying_cone(centerDistance):
 def obstacle_present(distance):
     return distance <= min_obstacle_distance
 
-def blind_search(leftDistance, rightDistance):
+def blind_search(leftDistance, rightDistance, carryingCone):
     if (obstacle_present(leftDistance)):
         if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
@@ -393,8 +398,11 @@ def blind_search(leftDistance, rightDistance):
         # just an obstacle right
         travelCounterClockwise()
     else:
-        # no obstacles
-        travelForward()
+        # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
+        if (carryingCones):
+            travelForward()
+        else:
+            travelForwardFast()
 
 
 while (1):
@@ -432,7 +440,7 @@ while (1):
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
-            blind_search(leftDistance, rightDistance)
+            blind_search(leftDistance, rightDistance, false)
 
     elif (state == state_delivering):
 
@@ -469,7 +477,7 @@ while (1):
 
                 else:
                     # we do not see the collection area. For now do what we do when we don't see a cone
-                    blind_search(leftDistance, rightDistance)
+                    blind_search(leftDistance, rightDistance, true)
 
         else:
             # Something went wrong.. cone is not in field of view
