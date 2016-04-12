@@ -355,7 +355,7 @@ high_x_bound = 165
 state_searching = 1
 state_delivering = 2
 min_cone_distance = 10
-min_obstacle_distance = 30
+min_obstacle_distance = 20
 
 global state
 state = state_searching
@@ -414,6 +414,8 @@ while (1):
     centerDistance = getPingCenter()
     rightDistance = getPingRight()
     cone_info = find_signature(blocks, count, signature_cone)
+    print("left distance: " + str(leftDistance))
+    print("right distance: " + str(rightDistance))
 
 
     if (state == state_searching):
