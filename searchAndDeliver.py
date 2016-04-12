@@ -256,8 +256,8 @@ def getDx():
 
 def travelForwardFast():
     moveForward();
-    setRight(80);
-    setLeft(90);
+    setRight(70);
+    setLeft(80);
 
 def travelForward():
     moveForward();
