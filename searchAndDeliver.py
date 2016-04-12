@@ -394,6 +394,7 @@ def dest_is_right(x, y):
 def carrying_cone():
     global min_cone_distance
     centerDistance = getPingCenter()
+    print("center distance: " + str(centerDistance))
     return centerDistance <= min_cone_distance and centerDistance != 0
 
 def obstacle_present(distance):
@@ -403,7 +404,8 @@ def obstacle_present(distance):
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
     rightDistance = getPingRight()
-
+    print("left distance: " + str(leftDistance))
+    print("right distance: " + str(rightDistance))
     if (obstacle_present(leftDistance)):
         if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
