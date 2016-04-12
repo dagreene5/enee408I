@@ -364,7 +364,7 @@ low_x_bound = 125
 high_x_bound = 175
 state_searching = 1
 state_delivering = 2
-min_cone_distance = 12
+min_cone_distance = 15
 min_obstacle_distance = 20
 lastDepositDirection = -1
 
