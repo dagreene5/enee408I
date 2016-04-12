@@ -458,7 +458,7 @@ while (1):
 
             if (not (carrying_cone(centerDistance))):
                 # cone is too far away. Search for it again
-                print("Going back to delivering)
+                print("Going back to delivering")
                 state = state_searching
             else:
                 # we are safely carrying the cone. Start looking for the collection area
