@@ -360,8 +360,8 @@ global lastDepositDirection
 
 signature_cone = 1
 signature_collection_box = 3
-low_x_bound = 125
-high_x_bound = 175
+low_x_bound = 115
+high_x_bound = 185
 state_searching = 1
 state_delivering = 2
 min_cone_distance = 13
@@ -493,7 +493,7 @@ while (1):
 
             if (not (carrying_cone(centerDistance))):
                 # cone is too far away. Search for it again
-                print("Going back to delivering")
+                print("Going back to searching")
                 state = state_searching
             else:
                 # we are safely carrying the cone. Start looking for the collection area
