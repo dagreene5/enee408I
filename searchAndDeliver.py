@@ -415,39 +415,50 @@ while (1):
     rightDistance = getPingRight()
     cone_info = find_signature(blocks, count, signature_cone)
 
+
     if (state == state_searching):
+
+        print("Searching for cone")
         
         if (cone_info[0]):           # cone in field of view
             cone_x = cone_info[1]
             cone_y = cone_info[2]
+            print("Found cone")
 
             if (dest_is_straight(cone_x, cone_y)):
 
                 # cone is in front of us. If we are carrying it, change state
                 if (carrying_cone(centerDistance)):
                     state = state_delivering
+                    print("Transitioning to delivering")
                 else:
                     travelForward()   # move to cone
+                    print("Moving forward to cone")
                 
             elif (dest_is_left(cone_x, cone_y)):
                 # cone is to the left of us
                 # an obstacle to the left of us is likely just the cone
                 # just turn that way
                 travelCounterClockwise()
+                print("Moving left to cone")
             else:
                 # cone must be to the right. turn that way
                 travelClockwise()
+                print("Moving right to cone")
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
             blind_search(leftDistance, rightDistance, False)
+            print("Blind search")
 
     elif (state == state_delivering):
 
+        print("Searching for delivery area")
         if (cone_info[0]): 
 
             if (not (carrying_cone(centerDistance))):
                 # cone is too far away. Search for it again
+                print("Going back to delivering)
                 state = state_searching
             else:
                 # we are safely carrying the cone. Start looking for the collection area
