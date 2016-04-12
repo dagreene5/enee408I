@@ -423,7 +423,7 @@ while (1):
     print("right distance: " + str(rightDistance))
     print("center distance: " + str(centerDistance))
     print("pixy count: " + str(count))
-    print("cone info: " + str(cone_info[0]) + ", " + str(cone_info[1]) + ", " + str(cone_info[2]))
+    print("cone info: " + str(cone_info[0]))
 
 
 
