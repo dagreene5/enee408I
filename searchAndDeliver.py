@@ -356,6 +356,7 @@ global state_searching
 global state_delivering
 global min_cone_distance
 global min_obstacle_distance
+global lastDepositDirection
 
 signature_cone = 1
 signature_collection_box = 3
@@ -365,6 +366,7 @@ state_searching = 1
 state_delivering = 2
 min_cone_distance = 9
 min_obstacle_distance = 20
+lastDepositDirection = -1
 
 global state
 state = state_searching
@@ -456,6 +458,13 @@ while (1):
                 # cone is in front of us. If we are carrying it, change state
                 if (carrying_cone(centerDistance)):
                     state = state_delivering
+
+                    if (lastDepositDirection == 1): # deposit was last left
+                        travelCounterClockwise()
+                    elif (lastDepositDirection == 2):
+                        travelForward()
+                    elif (lastDepositDirection == 3):
+                        travelClockwise()
                     print("Transitioning to delivering")
                 else:
                     travelForward()   # move to cone
@@ -496,6 +505,7 @@ while (1):
                     collection_y = collection_info[2]
 
                     if (dest_is_straight(collection_x, collection_y)):
+                        lastDepositDirection = 2
                         # dropoff area is straight ahead. Move towards it until both pings read an obstacle
                         if (obstacle_present(leftDistance)):
                             if (obstacle_present(rightDistance)):
@@ -508,11 +518,14 @@ while (1):
                             # probably the wall behind the collection area
                             moveForward()
                     elif (dest_is_left(collection_x, collection_y)):
+                        lastDepositDirection = 1
                         travelCounterClockwise()
                     else:
+                        lastDepositDirection = 3
                         travelClockwise()
 
                 else:
+                    lastDepositDirection = -1
                     # we do not see the collection area. For now do what we do when we don't see a cone
                     blind_search(leftDistance, rightDistance, True)
 
