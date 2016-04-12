@@ -519,9 +519,7 @@ while (1):
                     if (dest_is_straight(collection_x, collection_y)):
                         lastDepositDirection = 2
                         # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-                        if (obstacle_present(leftDistance)):
-                            if (obstacle_present(rightDistance)):
-                                halt()      
+                        is_blocked()     
                                 # we got it there! 
                                 # Use the accelerometer to turn around 180 degrees and start searching again
                         else:
