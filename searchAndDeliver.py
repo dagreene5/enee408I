@@ -386,7 +386,7 @@ def blind_search(leftDistance, rightDistance, carryingCone):
     if (obstacle_present(leftDistance)):
         if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
-            if (leftDistance < rightDistance):
+            if (leftDistance < (rightDistance + 5)):
                 # left obstacle is closer. Turn right
                 print("object left and right, going right")
                 travelClockwise()
