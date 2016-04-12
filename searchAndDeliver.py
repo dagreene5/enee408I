@@ -256,23 +256,23 @@ def getDx():
 
 def travelForwardFast():
     moveForward();
-    setRight(70);
-    setLeft(80);
-
-def travelForward():
-    moveForward();
     setRight(50);
     setLeft(60);
 
+def travelForward():
+    moveForward();
+    setRight(40);
+    setLeft(50);
+
 def travelClockwise():
     rotateClockwise()
-    setLeft(50)
-    setRight(60)
+    setLeft(40)
+    setRight(50)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(50)
-    setRight(60)
+    setLeft(40)
+    setRight(50)
 
 def objectDetected(distance):
     return distance != 0 and distance < 30;
