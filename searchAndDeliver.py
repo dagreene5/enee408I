@@ -391,7 +391,7 @@ def dest_is_right(x, y):
 
 def carrying_cone(centerDistance):
     global min_cone_distance
-    return centerDistance <= min_cone_distance
+    return centerDistance <= min_cone_distance and centerDistance != 0
 
 def obstacle_present(distance):
     global min_obstacle_distance
