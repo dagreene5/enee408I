@@ -349,7 +349,7 @@ class Blocks (Structure):
 blocks = BlockArray(100)
 
 signature_cone = 1
-signature_collection_box = 2
+signature_collection_box = 3
 low_x_bound = 135
 high_x_bound = 165
 state_searching = 1
