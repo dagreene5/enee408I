@@ -350,8 +350,8 @@ blocks = BlockArray(100)
 
 signature_cone = 1
 signature_collection_box = 3
-low_x_bound = 135
-high_x_bound = 165
+low_x_bound = 125
+high_x_bound = 175
 state_searching = 1
 state_delivering = 2
 min_cone_distance = 10
