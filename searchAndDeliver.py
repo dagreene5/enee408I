@@ -359,7 +359,7 @@ global min_obstacle_distance
 global lastDepositDirection
 
 signature_cone = 1
-signature_collection_box = 3
+signature_collection_box = 2
 low_x_bound = 115
 high_x_bound = 185
 state_searching = 1
