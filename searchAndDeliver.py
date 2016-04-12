@@ -370,10 +370,10 @@ def find_signature(blocks, count, signature):
 def dest_is_straight(x, y):
     return low_x_bound <= x <= high_x_bound
 
-def dest_is_right(x, y):
+def dest_is_left(x, y):
     return low_x_bound >= x
 
-def dest_is_left(x, y):
+def dest_is_right(x, y):
     return high_x_bound <= x
 
 def carrying_cone(centerDistance):
