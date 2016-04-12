@@ -391,15 +391,19 @@ def dest_is_right(x, y):
     global high_x_bound
     return high_x_bound <= x
 
-def carrying_cone(centerDistance):
+def carrying_cone():
     global min_cone_distance
+    centerDistance = getPingCenter()
     return centerDistance <= min_cone_distance and centerDistance != 0
 
 def obstacle_present(distance):
     global min_obstacle_distance
     return distance <= min_obstacle_distance and distance != 0
 
-def blind_search(leftDistance, rightDistance, carryingCone):
+def blind_search(carryingCone):
+    leftDistance = getPingLeft()
+    rightDistance = getPingRight()
+
     if (obstacle_present(leftDistance)):
         if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
@@ -432,15 +436,15 @@ while (1):
     global state
 
     count = pixy_get_blocks(100, blocks)
-    leftDistance = getPingLeft()
-    centerDistance = getPingCenter()
-    rightDistance = getPingRight()
+    #leftDistance = getPingLeft()
+    #centerDistance = getPingCenter()
+    #rightDistance = getPingRight()
     cone_info = find_signature(blocks, count, signature_cone)
-    print("left distance: " + str(leftDistance))
-    print("right distance: " + str(rightDistance))
-    print("center distance: " + str(centerDistance))
-    print("pixy count: " + str(count))
-    print("cone info: " + str(cone_info[0]))
+    #print("left distance: " + str(leftDistance))
+    #print("right distance: " + str(rightDistance))
+    #print("center distance: " + str(centerDistance))
+    #print("pixy count: " + str(count))
+    #print("cone info: " + str(cone_info[0]))
 
 
 
@@ -456,7 +460,7 @@ while (1):
             if (dest_is_straight(cone_x, cone_y)):
 
                 # cone is in front of us. If we are carrying it, change state
-                if (carrying_cone(centerDistance)):
+                if (carrying_cone()):
                     state = state_delivering
 
                     if (lastDepositDirection == 1): # deposit was last left
@@ -483,7 +487,7 @@ while (1):
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
-            blind_search(leftDistance, rightDistance, False)
+            blind_search(False)
             print("Blind search")
 
     elif (state == state_delivering):
@@ -491,7 +495,7 @@ while (1):
         print("Searching for delivery area")
         if (cone_info[0]): 
 
-            if (not (carrying_cone(centerDistance))):
+            if (not (carrying_cone())):
                 # cone is too far away. Search for it again
                 print("Going back to searching")
                 state = state_searching
@@ -527,7 +531,7 @@ while (1):
                 else:
                     lastDepositDirection = -1
                     # we do not see the collection area. For now do what we do when we don't see a cone
-                    blind_search(leftDistance, rightDistance, True)
+                    blind_search(True)
 
         else:
             # Something went wrong.. cone is not in field of view
