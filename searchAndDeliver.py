@@ -256,13 +256,13 @@ def getDx():
 
 def travelForwardFast():
     moveForward();
-    setRight(50);
-    setLeft(60);
+    setRight(80);
+    setLeft(90);
 
 def travelForward():
     moveForward();
-    setRight(40);
-    setLeft(50);
+    setRight(60);
+    setLeft(70);
 
 def travelClockwise():
     rotateClockwise()
@@ -364,7 +364,7 @@ low_x_bound = 115
 high_x_bound = 185
 state_searching = 1
 state_delivering = 2
-min_cone_distance = 13
+min_cone_distance = 12
 min_obstacle_distance = 20
 lastDepositDirection = -1
 
