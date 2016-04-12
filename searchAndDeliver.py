@@ -256,23 +256,23 @@ def getDx():
 
 def travelForwardFast():
     moveForward();
-    setRight(60);
-    setLeft(70);
+    setRight(70);
+    setLeft(80);
 
 def travelForward():
     moveForward();
-    setRight(40);
-    setLeft(50);
+    setRight(50);
+    setLeft(60);
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
 
 def objectDetected(distance):
     return distance != 0 and distance < 30;
@@ -388,17 +388,22 @@ def blind_search(leftDistance, rightDistance, carryingCone):
             # fully blocked. Move in most available direction
             if (leftDistance < rightDistance):
                 # left obstacle is closer. Turn right
+                print("object left and right, going right")
                 travelClockwise()
             else:
                 travelCounterClockwise()
+                print("object left and right, going left")
         else:
             # just an obstacle left
             travelClockwise()
+            print("object left, nothing right. Going right")
     elif (obstacle_present(rightDistance)):
         # just an obstacle right
         travelCounterClockwise()
+        print("object right, nothing left. Going left")
     else:
         # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
+        print("no obstacles")
         if (carryingCones):
             travelForward()
         else:
@@ -416,6 +421,8 @@ while (1):
     cone_info = find_signature(blocks, count, signature_cone)
     print("left distance: " + str(leftDistance))
     print("right distance: " + str(rightDistance))
+    print("center distance: " + str(centerDistance))
+
 
 
     if (state == state_searching):
