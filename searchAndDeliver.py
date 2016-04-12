@@ -360,11 +360,11 @@ global lastDepositDirection
 
 signature_cone = 1
 signature_collection_box = 3
-low_x_bound = 115
-high_x_bound = 185
+low_x_bound = 135
+high_x_bound = 165
 state_searching = 1
 state_delivering = 2
-min_cone_distance = 9
+min_cone_distance = 8
 min_obstacle_distance = 20
 lastDepositDirection = -1
 
