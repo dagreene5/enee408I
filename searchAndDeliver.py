@@ -363,7 +363,7 @@ low_x_bound = 115
 high_x_bound = 185
 state_searching = 1
 state_delivering = 2
-min_cone_distance = 10
+min_cone_distance = 8
 min_obstacle_distance = 20
 
 global state
