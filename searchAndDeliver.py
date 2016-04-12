@@ -348,6 +348,15 @@ class Blocks (Structure):
                ("angle", c_uint) ]
 blocks = BlockArray(100)
 
+global signature_cone
+global signature_collection_box
+global low_x_bound
+global high_x_bound
+global state_searching
+global state_delivering
+global min_cone_distance
+global min_obstacle_distance
+
 signature_cone = 1
 signature_collection_box = 3
 low_x_bound = 125
@@ -368,18 +377,24 @@ def find_signature(blocks, count, signature):
     return (False,)
 
 def dest_is_straight(x, y):
+    global low_x_bound
+    global high_x_bound
     return low_x_bound <= x <= high_x_bound
 
 def dest_is_left(x, y):
+    global low_x_bound
     return low_x_bound >= x
 
 def dest_is_right(x, y):
+    global high_x_bound
     return high_x_bound <= x
 
 def carrying_cone(centerDistance):
+    global min_cone_distance
     return centerDistance <= min_cone_distance
 
 def obstacle_present(distance):
+    global min_obstacle_distance
     return distance <= min_obstacle_distance and distance != 0
 
 def blind_search(leftDistance, rightDistance, carryingCone):
@@ -455,7 +470,7 @@ while (1):
             else:
                 # cone must be to the right. turn that way
                 travelClockwise()
-                print("Moving right to cone. X: " + str(cone_y))
+                print("Moving right to cone. X: " + str(cone_x))
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
