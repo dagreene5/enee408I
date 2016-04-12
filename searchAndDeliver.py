@@ -440,7 +440,7 @@ while (1):
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
-            blind_search(leftDistance, rightDistance, false)
+            blind_search(leftDistance, rightDistance, False)
 
     elif (state == state_delivering):
 
@@ -477,7 +477,7 @@ while (1):
 
                 else:
                     # we do not see the collection area. For now do what we do when we don't see a cone
-                    blind_search(leftDistance, rightDistance, true)
+                    blind_search(leftDistance, rightDistance, True)
 
         else:
             # Something went wrong.. cone is not in field of view
