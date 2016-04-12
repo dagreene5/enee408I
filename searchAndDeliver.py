@@ -404,7 +404,7 @@ def blind_search(leftDistance, rightDistance, carryingCone):
     else:
         # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
         print("no obstacles")
-        if (carryingCones):
+        if (carryingCone):
             travelForward()
         else:
             travelForwardFast()
