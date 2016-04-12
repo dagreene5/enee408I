@@ -380,7 +380,7 @@ def carrying_cone(centerDistance):
     return centerDistance <= min_cone_distance
 
 def obstacle_present(distance):
-    return distance <= min_obstacle_distance
+    return distance <= min_obstacle_distance && distance != 0
 
 def blind_search(leftDistance, rightDistance, carryingCone):
     if (obstacle_present(leftDistance)):
