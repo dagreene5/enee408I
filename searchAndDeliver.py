@@ -451,11 +451,11 @@ while (1):
                 # an obstacle to the left of us is likely just the cone
                 # just turn that way
                 travelCounterClockwise()
-                print("Moving left to cone")
+                print("Moving left to cone. X: " + str(cone_x))
             else:
                 # cone must be to the right. turn that way
                 travelClockwise()
-                print("Moving right to cone")
+                print("Moving right to cone. X: " + str(cone_y))
 
         else:                   # cone not in field of view
             # blind search for now. Work in acceleromoter, do a 360 degree turn searching and then move to open space
