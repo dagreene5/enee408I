@@ -401,6 +401,12 @@ def obstacle_present(distance):
     global min_obstacle_distance
     return distance <= min_obstacle_distance and distance != 0
 
+def is_blocked():
+    leftDistance = getPingLeft()
+    rightDistance = getPingRight()
+    if (obstacle_present(leftDistance) and obstacle_present(rightDistance)):
+        halt()
+        
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
     rightDistance = getPingRight()
