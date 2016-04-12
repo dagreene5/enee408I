@@ -404,9 +404,9 @@ def obstacle_present(distance):
 def is_blocked():
     leftDistance = getPingLeft()
     rightDistance = getPingRight()
-    if (obstacle_present(leftDistance) and obstacle_present(rightDistance)):
-        halt()
-        
+    return (obstacle_present(leftDistance) and obstacle_present(rightDistance))
+
+
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
     rightDistance = getPingRight()
@@ -519,7 +519,8 @@ while (1):
                     if (dest_is_straight(collection_x, collection_y)):
                         lastDepositDirection = 2
                         # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-                        is_blocked()     
+                        if is_blocked():
+                            halt()     
                                 # we got it there! 
                                 # Use the accelerometer to turn around 180 degrees and start searching again
                         else:
