@@ -2,6 +2,7 @@
 import struct
 import sys
 import serial
+import time
 from pixy import *
 from ctypes import *
 
@@ -154,6 +155,30 @@ class Block(_object):
 Block_swigregister = _pixy.Block_swigregister
 Block_swigregister(Block)
 
+
+#############################################
+#               Arduino Conrols             #
+#############################################
+
+def openArms():
+    port.write("aoe");
+    return;
+
+def closeArms():
+    port.write("ace");
+    return;
+
+def raiseArms():
+    port.write("are");
+    return;
+
+def lowerArms():
+    port.write("ale");
+    return;
+
+def stopArms():
+    port.write("ase");
+    return;
 
 def setLeft(pwm):
     port.write("sl " + str(pwm) + "e");
@@ -319,34 +344,9 @@ class LinkedList(object):
         return temp;
 
 
-#########################################################################################
-#                                   BEGIN CODE                                          #
-#########################################################################################
-
-
-port.flush();
-#setBoth(50);
-port.flush();
-
-# stupid initialization: flush buffer
-response = "";
-while (response == ""):
-    port.write("gple");
-    port.flush();
-    response = port.readline();
-
-# Pixy init
-pixy_init();
-
-class Blocks (Structure):
-  _fields_ = [ ("type", c_uint),
-               ("signature", c_uint),
-               ("x", c_uint),
-               ("y", c_uint),
-               ("width", c_uint),
-               ("height", c_uint),
-               ("angle", c_uint) ]
-blocks = BlockArray(100)
+################################################################################
+#                       PI UTILITY FUNCTIONS                                   #
+################################################################################
 
 global signature_cone
 global signature_collection_box
@@ -407,6 +407,17 @@ def is_blocked():
     rightDistance = getPingRight()
     return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
 
+def grabCone():
+    lowerArms()
+    time.sleep(1) # let the arms close...
+    closeArms()
+    time.sleep(1)
+
+def releaseCone():
+    openArms()
+    time.sleep(1)
+    raiseArms()
+    time.sleep(1)
 
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
@@ -438,6 +449,39 @@ def blind_search(carryingCone):
             travelForward()
         else:
             travelForwardFast()
+
+#########################################################################################
+#                                   BEGIN CODE                                          #
+#########################################################################################
+
+
+port.flush();
+#setBoth(50);
+port.flush();
+
+# for buffer to flush so we can communicate with the arduino
+response = "";
+while (response == ""):
+    port.write("gple");
+    port.flush();
+    response = port.readline();
+
+# Pixy init
+pixy_init();
+
+class Blocks (Structure):
+  _fields_ = [ ("type", c_uint),
+               ("signature", c_uint),
+               ("x", c_uint),
+               ("y", c_uint),
+               ("width", c_uint),
+               ("height", c_uint),
+               ("angle", c_uint) ]
+blocks = BlockArray(100)
+
+
+# start with arms open
+releaseCone()
 
 
 while (1):
@@ -472,6 +516,9 @@ while (1):
                 if (carrying_cone()):
                     state = state_delivering
 
+                    halt()
+                    grabCone()
+
                     if (lastDepositDirection == 1): # deposit was last left
                         travelCounterClockwise()
                     elif (lastDepositDirection == 2):
@@ -479,6 +526,7 @@ while (1):
                     elif (lastDepositDirection == 3):
                         travelClockwise()
                     print("Transitioning to delivering")
+
                 else:
                     travelForward()   # move to cone
                     print("Moving forward to cone")
@@ -504,9 +552,15 @@ while (1):
         print("Searching for delivery area")
         if (cone_info[0]): 
 
+
+            # This mostly a backup incase we missed with the arms.. might take this out
             if (not (carrying_cone())):
                 # cone is too far away. Search for it again
                 print("Going back to searching")
+                
+                halt()
+                releaseCone()
+
                 state = state_searching
             else:
                 # we are safely carrying the cone. Start looking for the collection area
@@ -521,7 +575,9 @@ while (1):
                         lastDepositDirection = 2
                         # dropoff area is straight ahead. Move towards it until both pings read an obstacle
                         if is_blocked():
-                            halt()     
+                            halt()
+                            print("reached destination. Releasing cone")
+                            releaseCone()    
                                 # we got it there! 
                                 # Use the accelerometer to turn around 180 degrees and start searching again
                         else:
