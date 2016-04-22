@@ -168,6 +168,10 @@ def closeArms():
     port.write("ace");
     return;
 
+def armsTravelPosition():
+    port.write("ate");
+    return;
+
 def raiseArms():
     port.write("are");
     return;
@@ -408,16 +412,18 @@ def is_blocked():
     return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
 
 def grabCone():
-    lowerArms()
-    time.sleep(1) # let the arms close...
+    #lowerArms()
+    #time.sleep(1) # let the arms close...
     closeArms()
     time.sleep(1)
 
 def releaseCone():
     openArms()
     time.sleep(1)
-    raiseArms()
-    time.sleep(1)
+    #armsTravelPosition()
+    #time.sleep(1)
+    #raiseArms()
+    #time.sleep(1)
 
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
@@ -480,8 +486,14 @@ class Blocks (Structure):
 blocks = BlockArray(100)
 
 
-# start with arms open
-releaseCone()
+# Initialize arm position
+closeArms()
+time.sleep(1)
+openArms()
+time.sleep(1)
+armsTravelPosition()
+time.sleep(1)
+
 
 
 while (1):
@@ -493,9 +505,9 @@ while (1):
     #centerDistance = getPingCenter()
     #rightDistance = getPingRight()
     cone_info = find_signature(blocks, count, signature_cone)
-    #print("left distance: " + str(leftDistance))
-    #print("right distance: " + str(rightDistance))
-    #print("center distance: " + str(centerDistance))
+    print("left distance: " + str(leftDistance))
+    print("right distance: " + str(rightDistance))
+    print("center distance: " + str(centerDistance))
     #print("pixy count: " + str(count))
     #print("cone info: " + str(cone_info[0]))
 
