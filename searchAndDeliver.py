@@ -161,7 +161,7 @@ Block_swigregister(Block)
 #############################################
 
 def openArms():
-    port.write("av 254e");
+    port.write("av 250e");
     return;
 
 def closeArms():
