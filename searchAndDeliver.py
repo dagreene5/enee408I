@@ -407,14 +407,14 @@ def is_blocked():
     return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
 
 def grabCone():
-    stopArms(1)
+    stopArms()
     time.sleep(1)
     closeArms()
     time.sleep(1)
     stopArms()
 
 def releaseCone():
-    stopArms(1)
+    stopArms()
     time.sleep(1)
     openArms()
     time.sleep(1)
