@@ -6,7 +6,7 @@ import time
 from pixy import *
 from ctypes import *
 
-port = serial.Serial('/dev/ttyACM1', baudrate=9600, timeout=1);   # communication with arduino
+port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communication with arduino
 file = open( "/dev/input/mice", "rb");                              # for optical input
 
 maxPwm = 60;
