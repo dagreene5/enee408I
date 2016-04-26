@@ -408,13 +408,13 @@ def is_blocked():
 
 def grabCone():
     closeArms()
-    time.sleep(1)
-    stopArms()
+    #time.sleep(1)
+    #stopArms()
 
 def releaseCone():
     openArms()
-    time.sleep(1)
-    stopArms()
+    #time.sleep(1)
+    #stopArms()
 
 def dropOffConeManuever():
     global signature_cone
