@@ -161,7 +161,7 @@ Block_swigregister(Block)
 #############################################
 
 def openArms():
-    port.write("av 250e");
+    port.write("av 254e");
     return;
 
 def closeArms():
@@ -420,12 +420,12 @@ def dropOffConeManuever():
     global signature_cone
     halt()
     releaseCone()
-    time.sleep(1)
+    time.sleep(5)
     travelBackward()
-    time.sleep(2)
+    time.sleep(6)
     halt()
     travelClockwise()
-    time.sleep(3)
+    time.sleep(6)
     halt()
     if (signature_cone == 1):
         signature_cone = 2
