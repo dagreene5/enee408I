@@ -407,11 +407,15 @@ def is_blocked():
     return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
 
 def grabCone():
+    stopArms(1)
+    time.sleep(1)
     closeArms()
     time.sleep(1)
     stopArms()
 
 def releaseCone():
+    stopArms(1)
+    time.sleep(1)
     openArms()
     time.sleep(1)
     stopArms()
@@ -422,10 +426,9 @@ def dropOffConeManuever():
     releaseCone()
     time.sleep(5)
     travelBackward()
-    time.sleep(6)
-    halt()
+    time.sleep(10)
     travelClockwise()
-    time.sleep(6)
+    time.sleep(10)
     halt()
     if (signature_cone == 1):
         signature_cone = 2
