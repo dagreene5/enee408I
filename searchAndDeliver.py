@@ -570,50 +570,50 @@ while (1):
 
 
             # This mostly a backup incase we missed with the arms.. might take this out
-            if (not (carrying_cone())):
+            #if (not (carrying_cone())):
                 # cone is too far away. Search for it again
-                print("Going back to searching")
+                #print("Going back to searching")
                 
-                halt()
-                releaseCone()
+               # halt()
+              #  releaseCone()
 
-                state = state_searching
-            else:
-                # we are safely carrying the cone. Start looking for the collection area
-                collection_info = find_signature(blocks, count, signature_collection_box)
+             #   state = state_searching
+            #else:
+            # we are safely carrying the cone. Start looking for the collection area
+            collection_info = find_signature(blocks, count, signature_collection_box)
 
-                if (collection_info[0]):
-                    # colletion area is visible and we are carrying the cone. Move to it
-                    collection_x = collection_info[1]
-                    collection_y = collection_info[2]
+            if (collection_info[0]):
+                # colletion area is visible and we are carrying the cone. Move to it
+                collection_x = collection_info[1]
+                collection_y = collection_info[2]
 
-                    if (dest_is_straight(collection_x, collection_y)):
-                        lastDepositDirection = 2
-                        # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-                        if is_blocked():
-                            halt()
-                            print("reached destination. Releasing cone")
-                            dropOffConeManuever()
-                            state = state_searching
+                if (dest_is_straight(collection_x, collection_y)):
+                    lastDepositDirection = 2
+                    # dropoff area is straight ahead. Move towards it until both pings read an obstacle
+                    if is_blocked():
+                        halt()
+                        print("reached destination. Releasing cone")
+                        dropOffConeManuever()
+                        state = state_searching
 
-                                # we got it there! 
-                                # Use the accelerometer to turn around 180 degrees and start searching again
-                        else:
-
-                            # revisit this case... maybe move towards where we detect an obstacle since it's
-                            # probably the wall behind the collection area
-                            moveForward()
-                    elif (dest_is_left(collection_x, collection_y)):
-                        lastDepositDirection = 1
-                        travelCounterClockwise()
+                            # we got it there! 
+                            # Use the accelerometer to turn around 180 degrees and start searching again
                     else:
-                        lastDepositDirection = 3
-                        travelClockwise()
 
+                        # revisit this case... maybe move towards where we detect an obstacle since it's
+                        # probably the wall behind the collection area
+                        moveForward()
+                elif (dest_is_left(collection_x, collection_y)):
+                    lastDepositDirection = 1
+                    travelCounterClockwise()
                 else:
-                    lastDepositDirection = -1
-                    # we do not see the collection area. For now do what we do when we don't see a cone
-                    blind_search(True)
+                    lastDepositDirection = 3
+                    travelClockwise()
+
+            else:
+                lastDepositDirection = -1
+                # we do not see the collection area. For now do what we do when we don't see a cone
+                blind_search(True)
 
         else:
             # Something went wrong.. cone is not in field of view
