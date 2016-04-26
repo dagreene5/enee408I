@@ -416,7 +416,7 @@ def releaseCone():
     time.sleep(1)
     stopArms()
 
-dropOffConeManuever():
+def dropOffConeManuever():
     global signature_cone
     global num_cone_signatures
     halt()
