@@ -10,6 +10,10 @@ def halt():
     port.write("he");
     return;
 
+def turnOffServo():
+    port.write("av 0e");
+    return;
+
 def getPingLeft():
     port.write("gple");
     ret = port.readline();
@@ -23,4 +27,5 @@ while (response == ""):
     response = port.readline();
 
 halt();
+turnOffServo();
 file.close();
