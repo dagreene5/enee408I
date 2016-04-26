@@ -281,6 +281,11 @@ def travelForward():
     setRight(60);
     setLeft(70);
 
+def travelBackward():
+    moveBackward()
+    setRight(60)
+    setLeft(70)
+
 def travelClockwise():
     rotateClockwise()
     setLeft(40)
@@ -341,6 +346,7 @@ class LinkedList(object):
 ################################################################################
 
 global signature_cone
+global num_cone_signatures
 global signature_collection_box
 global low_x_bound
 global high_x_bound
@@ -350,8 +356,9 @@ global min_cone_distance
 global min_obstacle_distance
 global lastDepositDirection
 
-signature_cone = 1
-signature_collection_box = 2
+signature_cone = 0
+num_cone_signatures = 2
+signature_collection_box = 3
 low_x_bound = 115
 high_x_bound = 185
 state_searching = 1
@@ -408,6 +415,21 @@ def releaseCone():
     openArms()
     time.sleep(1)
     stopArms()
+
+dropOffConeManuever():
+    global signature_cone
+    global num_cone_signatures
+    halt()
+    releaseCone()
+    time.sleep(1)
+    travelBackward()
+    time.sleep(2)
+    halt()
+    travelClockwise()
+    time.sleep(3)
+    halt()
+    signature_cone = (signature_cone + 1) % num_cone_signatures
+
 
 
 def blind_search(carryingCone):
@@ -569,7 +591,9 @@ while (1):
                         if is_blocked():
                             halt()
                             print("reached destination. Releasing cone")
-                            releaseCone()    
+                            dropOffConeManuever()
+                            state = state_searching
+
                                 # we got it there! 
                                 # Use the accelerometer to turn around 180 degrees and start searching again
                         else:
