@@ -161,27 +161,15 @@ Block_swigregister(Block)
 #############################################
 
 def openArms():
-    port.write("aoe");
+    port.write("av 1e");
     return;
 
 def closeArms():
-    port.write("ace");
-    return;
-
-def armsTravelPosition():
-    port.write("ate");
-    return;
-
-def raiseArms():
-    port.write("are");
-    return;
-
-def lowerArms():
-    port.write("ale");
+    port.write("av 254e");
     return;
 
 def stopArms():
-    port.write("ase");
+    port.write("av 0e");
     return;
 
 def setLeft(pwm):
@@ -412,18 +400,15 @@ def is_blocked():
     return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
 
 def grabCone():
-    #lowerArms()
-    #time.sleep(1) # let the arms close...
     closeArms()
-    time.sleep(1)
+    time.sleep(3)
+    stopArms()
 
 def releaseCone():
     openArms()
     time.sleep(1)
-    #armsTravelPosition()
-    #time.sleep(1)
-    #raiseArms()
-    #time.sleep(1)
+    stopArms()
+
 
 def blind_search(carryingCone):
     leftDistance = getPingLeft()
@@ -487,12 +472,7 @@ blocks = BlockArray(100)
 
 
 # Initialize arm position
-closeArms()
-time.sleep(1)
-openArms()
-time.sleep(1)
-armsTravelPosition()
-time.sleep(1)
+releaseCone()
 
 
 
