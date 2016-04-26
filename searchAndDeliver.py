@@ -161,11 +161,11 @@ Block_swigregister(Block)
 #############################################
 
 def openArms():
-    port.write("av 1e");
+    port.write("av 250e");
     return;
 
 def closeArms():
-    port.write("av 254e");
+    port.write("av 3e");
     return;
 
 def stopArms():
@@ -401,7 +401,7 @@ def is_blocked():
 
 def grabCone():
     closeArms()
-    time.sleep(3)
+    time.sleep(1)
     stopArms()
 
 def releaseCone():
