@@ -507,9 +507,9 @@ while (1):
     #centerDistance = getPingCenter()
     #rightDistance = getPingRight()
     cone_info = find_signature(blocks, count, signature_cone)
-    print("left distance: " + str(leftDistance))
-    print("right distance: " + str(rightDistance))
-    print("center distance: " + str(centerDistance))
+    #print("left distance: " + str(leftDistance))
+    #print("right distance: " + str(rightDistance))
+    #print("center distance: " + str(centerDistance))
     #print("pixy count: " + str(count))
     #print("cone info: " + str(cone_info[0]))
 
