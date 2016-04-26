@@ -356,7 +356,7 @@ global min_cone_distance
 global min_obstacle_distance
 global lastDepositDirection
 
-signature_cone = 0
+signature_cone = 1
 num_cone_signatures = 2
 signature_collection_box = 3
 low_x_bound = 115
@@ -418,7 +418,6 @@ def releaseCone():
 
 def dropOffConeManuever():
     global signature_cone
-    global num_cone_signatures
     halt()
     releaseCone()
     time.sleep(1)
@@ -428,7 +427,7 @@ def dropOffConeManuever():
     travelClockwise()
     time.sleep(3)
     halt()
-    signature_cone = (signature_cone + 1) % num_cone_signatures
+    signature_cone = (signature_cone == 1 ? 2 : 1)
 
 
 
