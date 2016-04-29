@@ -501,6 +501,7 @@ blocks = BlockArray(100)
 # Initialize arm position
 releaseCone()
 
+# Init network communication
 
 
 while (1):
