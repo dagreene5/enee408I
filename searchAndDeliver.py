@@ -415,21 +415,25 @@ def grabCone():
 
 def releaseCone():
     stopArms()
-    time.sleep(1)
+    time.sleep(2)
     openArms()
-    time.sleep(1)
+    time.sleep(2)
     stopArms()
 
 def dropOffConeManuever():
     global signature_cone
     halt()
+    time.sleep(2)
     releaseCone()
     time.sleep(5)
     travelBackward()
     time.sleep(10)
-    travelClockwise()
-    time.sleep(10)
     halt()
+    time.sleep(2)
+    travelClockwise()
+    time.sleep(5)
+    halt()
+    time.slee(1)
     if (signature_cone == 1):
         signature_cone = 2
     else:
