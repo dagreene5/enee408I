@@ -667,10 +667,12 @@ while (1):
     elif (state == state_grabbing):
         count = pixy_get_blocks(100, blocks)
         cone_info = find_signature(blocks, count, signature_cone)
-        cone_x = cone_info[1]
-        cone_y = cone_info[2]
+        
 
         if (cone_info[0]):
+
+            cone_x = cone_info[1]
+            cone_y = cone_info[2]
             if (dest_is_straight(cone_x, cone_y)):
 
                 # cone is in front of us. If we are carrying it, change state
