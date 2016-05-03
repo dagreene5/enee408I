@@ -734,29 +734,31 @@ while (1):
     elif(state == state_delivering):
         # colletion area is visible and we are carrying the cone. Move to it
         collection_info = find_signature(blocks, count, signature_collection_box)
-        collection_x = collection_info[1]
-        collection_y = collection_info[2]
 
-        if (dest_is_straight(collection_x, collection_y)):
-            # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-            if is_blocked():
-                halt()
-                dropOffConeManuever()
-                state = state_confirm_delivery
+        if (collection_info[0]):
+            collection_x = collection_info[1]
+            collection_y = collection_info[2]
 
-                    # we got it there! 
-                    # Use the accelerometer to turn around 180 degrees and start searching again
+            if (dest_is_straight(collection_x, collection_y)):
+                # dropoff area is straight ahead. Move towards it until both pings read an obstacle
+                if is_blocked():
+                    halt()
+                    dropOffConeManuever()
+                    state = state_confirm_delivery
+
+                        # we got it there! 
+                        # Use the accelerometer to turn around 180 degrees and start searching again
+                else:
+
+                    # revisit this case... maybe move towards where we detect an obstacle since it's
+                    # probably the wall behind the collection area
+                    moveForward()
+            elif (dest_is_left(collection_x, collection_y)):
+                travelCounterClockwise()
             else:
-
-                # revisit this case... maybe move towards where we detect an obstacle since it's
-                # probably the wall behind the collection area
-                moveForward()
-        elif (dest_is_left(collection_x, collection_y)):
-            travelCounterClockwise()
+                travelClockwise()
         else:
-            lastDepositDirection = 3
-            travelClockwise()
-
+            blind_search(True)
     elif (state == state_confirm_delivery):
         halt()
         
