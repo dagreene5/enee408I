@@ -231,14 +231,16 @@ def moveBackward():
     return;
 
 def getPingLeft():
-    port.write("gple");
-    ret = port.readline();
-    return int(ret);
+    #port.write("gple");
+    #ret = port.readline();
+    #return int(ret);
+    return 0
 
 def getPingRight():
-    port.write("gpre");
-    ret = port.readline();
-    return int(ret);
+    #port.write("gpre");
+    #ret = port.readline();
+    #return int(ret);
+    return 0
 
 def getPingCenter():
     port.write("gpce");
@@ -275,26 +277,40 @@ def travelForwardFast():
     moveForward();
     setRight(70);
     setLeft(80);
+    #setRight(100)
+    #setLeft(110)
 
 def travelForward():
     moveForward();
     setRight(60);
     setLeft(70);
+    #setRight(90)
+    #setLeft(100)
 
 def travelBackward():
     moveBackward()
     setRight(60)
     setLeft(70)
+    #setRight(90)
+    #setLeft(100)
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
+    #setLeft(50)
+    #setRight(60)
+
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
+    #setLeft(50)
+    #setRight(60)
+
+def collectionDetected(distance):
+    return distance != 0 and distance < 45
 
 def objectDetected(distance):
     return distance != 0 and distance < 30;
@@ -355,7 +371,22 @@ global state_delivering
 global min_cone_distance
 global min_obstacle_distance
 global lastDepositDirection
+global cycleCount
+global leftDistance
+global rightDistance
+global centerDistance
+global blockedCount
+global lastX
+global lastY
 
+
+lastX = -1
+lastY = -1
+blockedCount = 0
+leftDistance = -1
+rightDistance = -1
+centerDistance = -1
+cycleCount = 0
 signature_cone = 1
 num_cone_signatures = 2
 signature_collection_box = 3
@@ -393,18 +424,75 @@ def dest_is_right(x, y):
 
 def carrying_cone():
     global min_cone_distance
-    centerDistance = getPingCenter()
+    global centerDistance
+
+    if (centerDistance == -1):
+	centerDistance = getPingCenter()
+    #centerDistance = getPingCenter()
     print("center distance: " + str(centerDistance))
-    return centerDistance <= min_cone_distance and centerDistance != 0
+    if (centerDistance <= min_cone_distance and centerDistance != 0):
+	halt()
+	time.sleep(.5)
+	count = 0
+	while (count < 10):
+		centerDistance = getPingCenter()
+		time.sleep(.1)
+		print("centerReading: " + str(centerDistance))
+		if (not(centerDistance <= min_cone_distance and centerDistance != 0)):
+			travelForward()
+			return False
+		count = count + 1
+	return True
+		    
+    return False
 
 def obstacle_present(distance):
     global min_obstacle_distance
-    return distance <= min_obstacle_distance and distance != 0
+    return distance <= min_obstacle_distance and not(distance == 0)
 
-def is_blocked():
-    leftDistance = getPingLeft()
-    rightDistance = getPingRight()
-    return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
+def obstacle_present_collection(distance):
+    return distance <= 25 and distance != 0
+
+
+def is_blocked(x, y):
+    global leftDistance
+    global rightDistance
+    global blockedCount
+    global centerDistance
+    global lastX, lastY
+
+    if (lastX == -1 or lastY == -1):
+	return False
+   
+    print("X: " + str(x) + ", Y: " + str(y))
+    if (abs(x - lastX) < 5 and abs(y - lastY) < 5):
+	blockedCount = blockedCount + 1
+	if (blockedCount == 4):
+		blockedCount = 0
+		centerDistance = -1
+		return True
+
+    return False
+    #halt()
+    #time.sleep(.5)
+    #leftDistance = getPingLeft()
+    #rightDistance = getPingRight()
+    #if (leftDistance == -1):
+	#leftDistance = getPingLeft()
+    #if (rightDistance == -1):
+	#rightDistance = getPingRight()
+    #leftDistance = getPingLeft()
+    #rightDistance = getPingRight()
+    #print("Left: " + str(leftDistance))
+    #print("Right: " + str(rightDistance))
+    #if (obstacle_present_collection(leftDistance) and obstacle_present_collection(rightDistance)):
+	#return True
+    #elif (not(leftDistance == 0) and leftDistance < 15):
+	#return True
+    #elif (not(rightDistance == 0) and rightDistance < 15):
+	#return True
+    #else:
+	#return False
 
 def grabCone():
     stopArms()
@@ -420,20 +508,96 @@ def releaseCone():
     time.sleep(2)
     stopArms()
 
+
+def blockedLeft():
+    global leftDistance
+    if (leftDistance == -1):
+	leftDistance = getPingLeft()
+
+    if (not(leftDistance == 0) and leftDistance < 8 and not(leftDistance == 3)):
+	return True
+    return False
+
+def blockedRight():
+    global rightDistance
+    if (rightDistance == -1):
+	rightDistance = getPingRight()
+
+    if (not(rightDistance == 0) and rightDistance < 8 and not(rightDistance == 3)):
+	return True
+    return False
+
+
+def escapeLeftWall():
+    global leftDistance
+    if (leftDistance == -1):
+	leftDistance = getPingLeft()
+
+    if (not(leftDistance == 0) and leftDistance < 8):
+	leftDistance = getPingLeft()
+	if (not(leftDistance == 0) and leftDistance < 8):
+		print("leftDistance: " + str(leftDistance))
+		halt()
+		time.sleep(1)
+		travelBackward()
+		time.sleep(2)
+		halt()
+		time.sleep(1)
+		travelClockwise()
+		time.sleep(1)
+		halt()
+		time.sleep(1)
+		travelForward()
+		time.sleep(1)
+		halt()
+	return True
+    else:
+	return False
+
+def escapeRightWall():
+    global rightDistance
+    if (rightDistance == -1):
+	rightDistance = getPingRight()
+
+    if (not(rightDistance == 0) and rightDistance < 8):
+	rightDistance = getPingRight()
+	if (not(rightDistance == 0) and rightDistance < 8):
+		print("rightDistance: " + str(rightDistance))
+		halt()
+		time.sleep(1)
+		travelBackward()
+		time.sleep(2)
+		halt()
+		time.sleep(1)
+		travelCounterClockwise()
+		time.sleep(1)
+		halt()
+		time.sleep(1)
+		travelForward()
+		time.sleep(1)
+		halt()
+	return True
+    else:
+	return False
+
 def dropOffConeManuever():
     global signature_cone
     halt()
-    time.sleep(2)
-    releaseCone()
-    time.sleep(5)
+    time.sleep(1)
     travelBackward()
-    time.sleep(10)
+    time.sleep(1)
     halt()
+    time.sleep(1)
+    releaseCone()
     time.sleep(2)
-    travelClockwise()
-    time.sleep(5)
+    travelBackward()
+    time.sleep(1)
     halt()
-    time.slee(1)
+    time.sleep(1)
+    travelClockwise()
+    time.sleep(2)
+    halt()
+    time.sleep(1)
     if (signature_cone == 1):
         signature_cone = 2
     else:
@@ -442,8 +606,15 @@ def dropOffConeManuever():
 
 
 def blind_search(carryingCone):
-    leftDistance = getPingLeft()
-    rightDistance = getPingRight()
+    global leftDistance
+    global rightDistance
+
+    if (leftDistance == -1):
+	leftDistance = getPingLeft()
+    if (rightDistance == -1):
+	rightDistance = getPingRight()
+    #leftDistance = getPingLeft()
+    #rightDistance = getPingRight()
     print("left distance: " + str(leftDistance))
     print("right distance: " + str(rightDistance))
     if (obstacle_present(leftDistance)):
@@ -468,9 +639,14 @@ def blind_search(carryingCone):
         # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
         print("no obstacles")
         if (carryingCone):
-            travelForward()
+            #travelForward()
+	    #time.sleep(1)
+	    travelClockwise()
+
         else:
-            travelForwardFast()
+            #travelForwardFast()
+	    #time.sleep(1)
+            travelClockwise()
 
 #########################################################################################
 #                                   BEGIN CODE                                          #
@@ -507,11 +683,23 @@ releaseCone()
 
 # Init network communication
 
+# Init sensor readings:
+leftDistance = getPingLeft()
+rightDistance = getPingRight()
+centerDistance = getPingCenter()
+
 
 while (1):
 
     global state
-
+    global leftDistance
+    global rightDistance
+    global centerDistance
+    global cycleCount
+    global blockedCount
+    global lastX
+    global lastY
+   
     count = pixy_get_blocks(100, blocks)
     #leftDistance = getPingLeft()
     #centerDistance = getPingCenter()
@@ -523,7 +711,15 @@ while (1):
     #print("pixy count: " + str(count))
     #print("cone info: " + str(cone_info[0]))
 
+    cycleCount = (cycleCount + 1) % 5
 
+    if (cycleCount == 4):
+	leftDistance = -1
+    if (cycleCount == 0):
+	#leftDistance = -1
+	rightDistance = -1
+  	centerDistance = -1
+	#blockedCount = 0
 
     if (state == state_searching):
 
@@ -539,6 +735,8 @@ while (1):
                 # cone is in front of us. If we are carrying it, change state
                 if (carrying_cone()):
                     state = state_delivering
+		    leftDistance = getPingLeft()
+		    rightDistance = getPingRight()
 
                     halt()
                     grabCone()
@@ -574,57 +772,44 @@ while (1):
     elif (state == state_delivering):
 
         print("Searching for delivery area")
-        if (cone_info[0]): 
+
+        collection_info = find_signature(blocks, count, signature_collection_box)
 
 
-            # This mostly a backup incase we missed with the arms.. might take this out
-            #if (not (carrying_cone())):
-                # cone is too far away. Search for it again
-                #print("Going back to searching")
-                
-               # halt()
-              #  releaseCone()
+	if (collection_info[0]):
+	        # colletion area is visible and we are carrying the cone. Move to it
+	        collection_x = collection_info[1]
+	        collection_y = collection_info[2]
+	
+	        if (dest_is_straight(collection_x, collection_y)):
+	            lastDepositDirection = 2
+	            # dropoff area is straight ahead. Move towards it until both pings read an obstacle
+	            if is_blocked(collection_x, collection_y):
+			print("Is blocked true. Left: " + str(leftDistance) + ", right: " + str(rightDistance))
+                	halt()
+                	print("reached destination. Releasing cone")
+                	dropOffConeManuever()
+	                state = state_searching
+			centerDistance = -1
+	
+	                    	# we got it there! 
+	                    	# Use the accelerometer to turn around 180 degrees and start searching again
+		    else:
+			travelForward()
+			time.sleep(1)
+		    lastX = collection_x
+  		    lastY = collection_y
+	                		# revisit this case... maybe move towards where we detect an obstacle since it's
+	                		# probably the wall behind the collection area
+	                
+	        elif (dest_is_left(collection_x, collection_y)):
+	            lastDepositDirection = 1
+	            travelCounterClockwise()
+	        else:
+	            lastDepositDirection = 3
+            	    travelClockwise()
+	else:
+		blind_search(True)
 
-             #   state = state_searching
-            #else:
-            # we are safely carrying the cone. Start looking for the collection area
-            collection_info = find_signature(blocks, count, signature_collection_box)
-
-            if (collection_info[0]):
-                # colletion area is visible and we are carrying the cone. Move to it
-                collection_x = collection_info[1]
-                collection_y = collection_info[2]
-
-                if (dest_is_straight(collection_x, collection_y)):
-                    lastDepositDirection = 2
-                    # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-                    if is_blocked():
-                        halt()
-                        print("reached destination. Releasing cone")
-                        dropOffConeManuever()
-                        state = state_searching
-
-                            # we got it there! 
-                            # Use the accelerometer to turn around 180 degrees and start searching again
-                    else:
-
-                        # revisit this case... maybe move towards where we detect an obstacle since it's
-                        # probably the wall behind the collection area
-                        moveForward()
-                elif (dest_is_left(collection_x, collection_y)):
-                    lastDepositDirection = 1
-                    travelCounterClockwise()
-                else:
-                    lastDepositDirection = 3
-                    travelClockwise()
-
-            else:
-                lastDepositDirection = -1
-                # we do not see the collection area. For now do what we do when we don't see a cone
-                blind_search(True)
-
-        else:
-            # Something went wrong.. cone is not in field of view
-            state = state_searching
 
 file.close();
