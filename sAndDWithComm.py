@@ -739,6 +739,7 @@ while (1):
             print("We see collection box")
             collection_x = collection_info[1]
             collection_y = collection_info[2]
+            print("X, Y: " + str(collection_x) + ", " + str(collection_y))
 
             if (dest_is_straight(collection_x, collection_y)):
                 # dropoff area is straight ahead. Move towards it until both pings read an obstacle
