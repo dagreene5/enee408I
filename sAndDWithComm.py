@@ -380,8 +380,11 @@ global state_confirm_delivery
 global blockedCount
 global lastX
 global lastY
+global centerDistance
+global cycleCount
 
-
+cycleCount = 0
+centerDistance = -1
 lastX = -1
 lastY = -1
 blockedCount = 0
@@ -601,6 +604,13 @@ while (1):
     global state_request_deliver
     global state_delivering
     global state_confirm_delivery
+    global centerDistance
+    global cycleCount
+
+    cycleCount = (cycleCount + 1) % 5
+
+    if (cycleCount == 4):
+        centerDistance = -1
 
     if (state == state_request_sig):
         halt()
