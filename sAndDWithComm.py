@@ -605,6 +605,8 @@ while (1):
     global state_confirm_delivery
     global centerDistance
     global cycleCount
+    global lastX
+    global lastY
 
     cycleCount = (cycleCount + 1) % 5
 
@@ -754,7 +756,10 @@ while (1):
 
                     # revisit this case... maybe move towards where we detect an obstacle since it's
                     # probably the wall behind the collection area
-                    moveForward()
+                    travelForward()
+                    time.sleep(1)
+                    lastX = collection_x
+                    lastY = collection_y
             elif (dest_is_left(collection_x, collection_y)):
                 print("dest is left")
                 travelCounterClockwise()
