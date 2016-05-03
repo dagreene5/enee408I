@@ -12,13 +12,14 @@ port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communicatio
 
 
 # TCP connection init
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.0.103'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 
+print("Connecting to server...")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
-
+print("Connected")
 
 
 maxPwm = 60;
@@ -376,6 +377,15 @@ global state_request_deliver
 global state_delivering
 global state_confirm_delivery
 
+global blockedCount
+global lastX
+global lastY
+
+
+lastX = -1
+lastY = -1
+blockedCount = 0
+
 state_request_sig = 1
 state_searching = 3
 state_request_grab = 4
@@ -423,18 +433,51 @@ def dest_is_right(x, y):
 
 def carrying_cone():
     global min_cone_distance
-    centerDistance = getPingCenter()
+    global centerDistance
+
+    if (centerDistance == -1):
+        centerDistance = getPingCenter()
+
     print("center distance: " + str(centerDistance))
-    return centerDistance <= min_cone_distance and centerDistance != 0
+    if (centerDistance <= min_cone_distance and centerDistance != 0):
+        halt()
+        time.sleep(.5)
+        count = 0
+        while (count < 10):
+            centerDistance = getPingCenter()
+            time.sleep(.1)
+            print("centerReading: " + str(centerDistance))
+            if (not(centerDistance <= min_cone_distance and centerDistance != 0)):
+                travelForward()
+                return False
+            count = count + 1
+        return True
+            
+    return False
 
 def obstacle_present(distance):
     global min_obstacle_distance
     return distance <= min_obstacle_distance and distance != 0
 
-def is_blocked():
-    leftDistance = getPingLeft()
-    rightDistance = getPingRight()
-    return False#(obstacle_present(leftDistance) and obstacle_present(rightDistance))
+def is_blocked(x, y):
+    global leftDistance
+    global rightDistance
+    global blockedCount
+    global centerDistance
+    global lastX, lastY
+
+    if (lastX == -1 or lastY == -1):
+        return False
+   
+    print("X: " + str(x) + ", Y: " + str(y))
+    if (abs(x - lastX) < 5 and abs(y - lastY) < 5):
+        blockedCount = blockedCount + 1
+        if (blockedCount == 4):
+            blockedCount = 0
+            centerDistance = -1
+            return True
+
+    return False
 
 def grabCone():
     stopArms()
@@ -453,13 +496,21 @@ def releaseCone():
 def dropOffConeManuever():
     global signature_cone
     halt()
-    releaseCone()
-    time.sleep(5)
+    time.sleep(1)
     travelBackward()
-    time.sleep(10)
-    travelClockwise()
-    time.sleep(10)
+    time.sleep(1)
     halt()
+    time.sleep(.5)
+    releaseCone()
+    time.sleep(2)
+    travelBackward()
+    time.sleep(.5)
+    halt()
+    time.sleep(.5)
+    travelClockwise()
+    time.sleep(3)
+    halt()
+    time.sleep(.5)
     if (signature_cone == 1):
         signature_cone = 2
     else:
@@ -468,35 +519,38 @@ def dropOffConeManuever():
 
 
 def blind_search(carryingCone):
-    leftDistance = getPingLeft()
-    rightDistance = getPingRight()
-    print("left distance: " + str(leftDistance))
-    print("right distance: " + str(rightDistance))
-    if (obstacle_present(leftDistance)):
-        if (obstacle_present(rightDistance)):
+    global centerDistance
+    #leftDistance = getPingLeft()
+    #rightDistance = getPingRight()
+    #print("left distance: " + str(leftDistance))
+    #print("right distance: " + str(rightDistance))
+    #if (obstacle_present(leftDistance)):
+    #    if (obstacle_present(rightDistance)):
             # fully blocked. Move in most available direction
-            if (leftDistance < (rightDistance + 2)):
+    #        if (leftDistance < (rightDistance + 2)):
                 # left obstacle is closer. Turn right
-                print("object left and right, going right")
-                travelClockwise()
-            else:
-                travelCounterClockwise()
-                print("object left and right, going left")
-        else:
+    #            print("object left and right, going right")
+    #            travelClockwise()
+    #        else:
+    #            travelCounterClockwise()
+    #            print("object left and right, going left")
+    #    else:
             # just an obstacle left
-            travelClockwise()
-            print("object left, nothing right. Going right")
-    elif (obstacle_present(rightDistance)):
+    #        travelClockwise()
+    #        print("object left, nothing right. Going right")
+    #elif (obstacle_present(rightDistance)):
         # just an obstacle right
-        travelCounterClockwise()
-        print("object right, nothing left. Going left")
-    else:
+    #    travelCounterClockwise()
+    #    print("object right, nothing left. Going left")
+    #else:
         # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
-        print("no obstacles")
-        if (carryingCone):
-            travelForward()
-        else:
-            travelForwardFast()
+    print("no obstacles")
+    if (centerDistance == -1):
+        centerDistance = getPingCenter()
+    if (centerDistance == 0):
+        travelForward()
+    else:
+        travelClockwise()
 
 #########################################################################################
 #                                   BEGIN CODE                                          #
@@ -549,8 +603,10 @@ while (1):
         halt()
         s.send("r")
         sig = ""
+        print("Requesting what signature to look for...")
         while (sig == ""):
             sig = s.recv(BUFFER_SIZE)
+        print("Received: " + sig)
 
         if (sig == "1"):
             signature_cone = 1
@@ -575,13 +631,16 @@ while (1):
     elif (state == state_request_grab):
         halt()
         if (signature_cone == 1):
+            print("Requesting to grab 1")
             s.send("g1")
         else:
+            print("Requesting to grab 2")
             s.send("g2")
         response = ""
         while (response == ""):
             response = s.recv(BUFFER_SIZE)
 
+        print("Received response: " + response)
         if (response == "c"):
             state = state_grabbing
         else:
@@ -637,13 +696,15 @@ while (1):
     elif(state == state_request_deliver):
         halt()
         if (signature_cone == 1):
+            print("Requesting to deliver 1")
             s.send("d1")
         else:
+            print("Requesting to deliver 2")
             s.send("d2")
         response = ""
         while (response == ""):
             response = recv(BUFFER_SIZE)
-
+        print("Received response: " + response)
         if (response == "c"):
             state = state_delivering
         else:
@@ -682,7 +743,14 @@ while (1):
 
     elif (state == state_confirm_delivery):
         halt()
-        s.send("cd")
+        
+        if (signature_cone == 1):
+            print("Sending signal confirmed delivery 1")
+            s.send("cd1")
+        else:
+            print("Sending signal confirmed delivery 2")
+            s.send("cd2")
+        
         state = state_request_sig
 
        
