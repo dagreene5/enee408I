@@ -736,6 +736,7 @@ while (1):
         collection_info = find_signature(blocks, count, signature_collection_box)
 
         if (collection_info[0]):
+            print("We see collection box")
             collection_x = collection_info[1]
             collection_y = collection_info[2]
 
@@ -754,10 +755,13 @@ while (1):
                     # probably the wall behind the collection area
                     moveForward()
             elif (dest_is_left(collection_x, collection_y)):
+                print("dest is left")
                 travelCounterClockwise()
             else:
+                print("dest is right")
                 travelClockwise()
         else:
+            print("no longer see collection box. blind searching")
             blind_search(True)
     elif (state == state_confirm_delivery):
         halt()
