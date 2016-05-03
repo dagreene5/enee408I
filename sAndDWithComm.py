@@ -473,7 +473,6 @@ def is_blocked(x, y):
     if (lastX == -1 or lastY == -1):
         return False
    
-    print("X: " + str(x) + ", Y: " + str(y))
     if (abs(x - lastX) < 5 and abs(y - lastY) < 5):
         blockedCount = blockedCount + 1
         if (blockedCount == 4):
@@ -700,7 +699,6 @@ while (1):
                 travelClockwise()
         else:
             # We lost it, but blind search for the one we were assigned
-            print("Blind searching. Didnt see sig " + str(signature_cone))
             blind_search(False)
 
     elif (state == state_searching_for_delivery_area):
@@ -741,10 +739,8 @@ while (1):
         collection_info = find_signature(blocks, count, signature_collection_box)
 
         if (collection_info[0]):
-            print("We see collection box")
             collection_x = collection_info[1]
             collection_y = collection_info[2]
-            print("X, Y: " + str(collection_x) + ", " + str(collection_y))
 
             if (dest_is_straight(collection_x, collection_y)):
                 # dropoff area is straight ahead. Move towards it until both pings read an obstacle
@@ -764,10 +760,8 @@ while (1):
                     lastX = collection_x
                     lastY = collection_y
             elif (dest_is_left(collection_x, collection_y)):
-                print("dest is left")
                 travelCounterClockwise()
             else:
-                print("dest is right")
                 travelClockwise()
         else:
             print("no longer see collection box. blind searching")
