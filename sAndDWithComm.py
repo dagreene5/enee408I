@@ -291,23 +291,23 @@ def travelForwardFast():
 
 def travelForward():
     moveForward();
-    setRight(60);
-    setLeft(70);
+    setRight(70);
+    setLeft(80);
 
 def travelBackward():
     moveBackward()
-    setRight(60)
-    setLeft(70)
+    setRight(70)
+    setLeft(80)
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(40)
-    setRight(50)
+    setLeft(50)
+    setRight(60)
 
 def objectDetected(distance):
     return distance != 0 and distance < 30;
