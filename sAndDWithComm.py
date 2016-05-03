@@ -550,7 +550,6 @@ def blind_search(carryingCone):
     if (carryingCone):
         travelClockwise()
     else:
-        print("no obstacles")
         if (centerDistance == -1):
             centerDistance = getPingCenter()
         if (centerDistance == 0 or centerDistance > 60):
@@ -666,8 +665,7 @@ while (1):
 
     elif (state == state_grabbing):
         count = pixy_get_blocks(100, blocks)
-        cone_info = find_signature(blocks, count, signature_cone)
-        
+        cone_info = find_signature(blocks, count, signature_cone) 
 
         if (cone_info[0]):
 
@@ -698,6 +696,7 @@ while (1):
                 travelClockwise()
         else:
             # We lost it, but blind search for the one we were assigned
+            print("Blind searching. Didnt see sig " + str(signature_cone))
             blind_search(False)
 
     elif (state == state_searching_for_delivery_area):
