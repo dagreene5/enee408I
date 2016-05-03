@@ -704,6 +704,7 @@ while (1):
             blind_search(False)
 
     elif (state == state_searching_for_delivery_area):
+        count = pixy_get_blocks(100, blocks)
         collection_info = find_signature(blocks, count, signature_collection_box)
 
         if (collection_info[0]):
@@ -736,6 +737,7 @@ while (1):
 
     elif(state == state_delivering):
         # colletion area is visible and we are carrying the cone. Move to it
+        count = pixy_get_blocks(100, blocks)
         collection_info = find_signature(blocks, count, signature_collection_box)
 
         if (collection_info[0]):
