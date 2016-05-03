@@ -446,7 +446,7 @@ def carrying_cone():
         halt()
         time.sleep(.5)
         count = 0
-        while (count < 10):
+        while (count <= 10):
             centerDistance = getPingCenter()
             time.sleep(.1)
             print("centerReading: " + str(centerDistance))
@@ -680,6 +680,7 @@ while (1):
                     grabCone()
 
                     if (carrying_cone()):
+                        print("Got cone. Searching for delivery area")
                         state = state_searching_for_delivery_area
                     else:
                         releaseCone() # try again to grab...
@@ -705,6 +706,7 @@ while (1):
         if (collection_info[0]):
             state = state_request_deliver
         else:
+            print("Do not see collection area")
             # we do not see the collection area. For now do what we do when we don't see a cone
             blind_search(True)
     elif(state == state_request_deliver):
