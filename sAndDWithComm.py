@@ -12,7 +12,7 @@ port = serial.Serial('/dev/ttyACM0', baudrate=9600, timeout=1);   # communicatio
 
 
 # TCP connection init
-TCP_IP = '192.168.0.103'
+TCP_IP = '192.168.0.102'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 
