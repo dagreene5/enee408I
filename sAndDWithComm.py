@@ -513,10 +513,6 @@ def dropOffConeManuever():
     time.sleep(3)
     halt()
     time.sleep(.5)
-    if (signature_cone == 1):
-        signature_cone = 2
-    else:
-        signature_cone = 1
 
 
 
