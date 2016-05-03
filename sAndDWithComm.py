@@ -677,13 +677,13 @@ while (1):
                 if (carrying_cone()):
 
                     halt()
+                    print("Grabbing cone")
                     grabCone()
-
-                    if (carrying_cone()):
-                        print("Got cone. Searching for delivery area")
-                        state = state_searching_for_delivery_area
-                    else:
-                        releaseCone() # try again to grab...
+                    print("Got cone. Searching for delivery area")
+                        
+                    state = state_searching_for_delivery_area
+                    #else:
+                     #   releaseCone() # try again to grab...
                 else:
                     travelForward()   # move to cone
                 
