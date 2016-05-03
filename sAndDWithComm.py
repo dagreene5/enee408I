@@ -742,7 +742,7 @@ while (1):
 
             if (dest_is_straight(collection_x, collection_y)):
                 # dropoff area is straight ahead. Move towards it until both pings read an obstacle
-                if is_blocked():
+                if is_blocked(collection_x, collection_y):
                     halt()
                     dropOffConeManuever()
                     state = state_confirm_delivery
