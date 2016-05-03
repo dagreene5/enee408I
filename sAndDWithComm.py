@@ -417,7 +417,6 @@ lastDepositDirection = -1
 def find_signature(blocks, count, signature):
     if (count > 0):
         for index in range (0, count):
-            print("See sig: " + str(blocks[index].signature))
             if (blocks[index].signature == signature or (not(blocks[index].signature == 3) and signature == 0)) :
                 return (True, blocks[index].x, blocks[index].y, blocks[index].signature)
     return (False,)
@@ -768,11 +767,11 @@ while (1):
             blind_search(True)
     elif (state == state_confirm_delivery):
         halt()
-        
+        print("Signature_cone: " + str(signature_cone))
         if (signature_cone == 1):
             print("Sending signal confirmed delivery 1")
             s.send("cd1")
-        else:
+        elif (signature_cone = 2):
             print("Sending signal confirmed delivery 2")
             s.send("cd2")
         time.sleep(1)
