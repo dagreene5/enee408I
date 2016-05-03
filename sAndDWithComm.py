@@ -544,13 +544,16 @@ def blind_search(carryingCone):
     #    print("object right, nothing left. Going left")
     #else:
         # no obstacles. Sprint if we don't have the cone, otherwise move more carefully
-    print("no obstacles")
-    if (centerDistance == -1):
-        centerDistance = getPingCenter()
-    if (centerDistance == 0 or centerDistance > 60):
-        travelForward()
-    else:
+    if (carryingCone):
         travelClockwise()
+    else:
+        print("no obstacles")
+        if (centerDistance == -1):
+            centerDistance = getPingCenter()
+        if (centerDistance == 0 or centerDistance > 60):
+            travelForward()
+        else:
+            travelClockwise()
 
 #########################################################################################
 #                                   BEGIN CODE                                          #
