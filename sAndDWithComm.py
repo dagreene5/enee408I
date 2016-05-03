@@ -414,7 +414,7 @@ lastDepositDirection = -1
 def find_signature(blocks, count, signature):
     if (count > 0):
         for index in range (0, count):
-            if (blocks[index].signature == signature or (Not(blocks[index].signature == 3) and signature == 0)) :
+            if (blocks[index].signature == signature or (not(blocks[index].signature == 3) and signature == 0)) :
                 return (True, blocks[index].x, blocks[index].y, blocks[index].signature)
     return (False,)
 
