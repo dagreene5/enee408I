@@ -719,7 +719,7 @@ while (1):
             s.send("d2")
         response = ""
         while (response == ""):
-            response = recv(BUFFER_SIZE)
+            response = s.recv(BUFFER_SIZE)
         print("Received response: " + response)
         if (response == "c"):
             state = state_delivering
