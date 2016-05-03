@@ -441,7 +441,6 @@ def carrying_cone():
     if (centerDistance == -1):
         centerDistance = getPingCenter()
 
-    print("center distance: " + str(centerDistance))
     if (centerDistance <= min_cone_distance and centerDistance != 0):
         halt()
         time.sleep(.5)
@@ -449,7 +448,7 @@ def carrying_cone():
         while (count <= 10):
             centerDistance = getPingCenter()
             time.sleep(.1)
-            print("centerReading: " + str(centerDistance))
+
             if (not(centerDistance <= min_cone_distance and centerDistance != 0)):
                 travelForward()
                 return False
