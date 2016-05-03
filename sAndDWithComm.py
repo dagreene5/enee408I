@@ -771,7 +771,7 @@ while (1):
         if (signature_cone == 1):
             print("Sending signal confirmed delivery 1")
             s.send("cd1")
-        elif (signature_cone = 2):
+        elif (signature_cone == 2):
             print("Sending signal confirmed delivery 2")
             s.send("cd2")
         time.sleep(1)
