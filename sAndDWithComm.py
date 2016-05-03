@@ -500,7 +500,7 @@ def releaseCone():
 def dropOffConeManuever():
     global signature_cone
     halt()
-    time.sleep(1)
+    time.sleep(.5)
     travelBackward()
     time.sleep(1)
     halt()
@@ -781,7 +781,7 @@ while (1):
         else:
             print("Sending signal confirmed delivery 2")
             s.send("cd2")
-        
+        time.sleep(1)
         state = state_request_sig
 
        
