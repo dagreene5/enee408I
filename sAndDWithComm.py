@@ -301,13 +301,13 @@ def travelBackward():
 
 def travelClockwise():
     rotateClockwise()
-    setLeft(60)
-    setRight(70)
+    setLeft(50)
+    setRight(60)
 
 def travelCounterClockwise():
     rotateCounterClockwise()
-    setLeft(60)
-    setRight(70)
+    setLeft(50)
+    setRight(60)
 
 def objectDetected(distance):
     return distance != 0 and distance < 30;
