@@ -470,10 +470,10 @@ def is_blocked(x, y):
 
     if (lastX == -1 or lastY == -1):
         return False
-   
+    print("X, Y: " + str(x) + ", " + str(y))
     if (abs(x - lastX) < 5 and abs(y - lastY) < 5):
         blockedCount = blockedCount + 1
-        if (blockedCount == 3):
+        if (blockedCount == 2):
             blockedCount = 0
             centerDistance = -1
             return True
