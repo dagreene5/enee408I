@@ -473,7 +473,7 @@ def is_blocked(x, y):
    
     if (abs(x - lastX) < 5 and abs(y - lastY) < 5):
         blockedCount = blockedCount + 1
-        if (blockedCount == 4):
+        if (blockedCount == 3):
             blockedCount = 0
             centerDistance = -1
             return True
